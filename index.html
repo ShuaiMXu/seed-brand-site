@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Seed — Preview</title>
+<style>
+  :root {
+    --bg: #f6f6f4;
+    --ink: #0a0a0a;
+    --muted: #6b6b68;
+    --line: #e4e3df;
+    --card: #ffffff;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "PingFang SC", -apple-system, "Helvetica Neue", "Inter", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.5;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 24px;
+  }
+  .wrap { max-width: 760px; width: 100%; }
+  .eyebrow { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
+  h1 { font-size: 40px; font-weight: 500; letter-spacing: -0.02em; margin-bottom: 12px; }
+  .lede { font-size: 16px; color: var(--muted); margin-bottom: 40px; max-width: 540px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 640px) { .grid { grid-template-columns: 1fr; } }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 28px;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.18s ease, border-color 0.18s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 200px;
+  }
+  .card:hover { transform: translateY(-2px); border-color: #0a0a0a; }
+  .card-title { font-size: 20px; font-weight: 500; margin-bottom: 6px; letter-spacing: -0.01em; }
+  .card-sub { font-size: 14px; color: var(--muted); }
+  .card-arrow { font-size: 14px; color: var(--ink); margin-top: 32px; font-family: monospace; }
+  .footer { margin-top: 48px; font-size: 12px; color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">Preview</div>
+  <h1>Seed</h1>
+  <p class="lede">Brand exploration for ByteDance Seed — homepage layout & full brand / design system spec.</p>
+  <div class="grid">
+    <a class="card" href="homepage.html">
+      <div>
+        <div class="card-title">Homepage</div>
+        <div class="card-sub">主页布局 / 通用智能研究</div>
+      </div>
+      <div class="card-arrow">homepage.html →</div>
+    </a>
+    <a class="card" href="brand-system.html">
+      <div>
+        <div class="card-title">Brand &amp; Design System</div>
+        <div class="card-sub">完整品牌与设计系统</div>
+      </div>
+      <div class="card-arrow">brand-system.html →</div>
+    </a>
+  </div>
+  <div class="footer">Static preview · GitHub Pages</div>
+</div>
+</body>
+</html>

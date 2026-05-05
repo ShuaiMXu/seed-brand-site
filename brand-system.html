@@ -1,0 +1,1678 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<title>Seed · Brand & Design System</title>
+<style>
+  /* ── Tokens (mirror Seed Homepage.html) ───────────── */
+  :root {
+    --bg: #ffffff;
+    --bg-soft: #f6f6f4;
+    --bg-alt: #efeeea;
+    --bg-deep: #0a0a0a;
+    --ink: #0a0a0a;
+    --ink-2: #1a1a1a;
+    --muted: #6b6b68;
+    --muted-2: #9a9a96;
+    --line: #e4e3df;
+    --line-2: #d4d3cf;
+    --heat-1: #ff8a3c;
+    --heat-2: #ffb347;
+    --heat-3: #fff1d6;
+    --serif: "PingFang SC","PingFang TC","PingFang HK",-apple-system,"Helvetica Neue",sans-serif;
+    --sans: "PingFang SC","PingFang TC","PingFang HK",-apple-system,"Helvetica Neue","Inter",sans-serif;
+    --mono: ui-monospace, SFMono-Regular, Menlo, "JetBrains Mono", monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #1a1a1a; font-family: var(--sans); color: var(--ink); -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  img, svg { display: block; max-width: 100%; }
+
+  deck-stage > section {
+    width: 1440px; height: 900px;
+    background: var(--bg); color: var(--ink);
+    overflow: hidden;
+    position: relative;
+    font-size: 14px; line-height: 1.55;
+  }
+
+  /* ── Common chrome ──────────────────────────────── */
+  .slide-pad { padding: 56px 72px; }
+  .slide-head {
+    display: flex; justify-content: space-between; align-items: baseline;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 18px; margin-bottom: 36px;
+  }
+  .eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+  .slide-title span { margin-left: 0.4em; }
+  .big-title span { margin-left: 0.4em; }
+  .slide-title {
+    font-family: var(--serif); font-weight: 400;
+    font-size: 44px; letter-spacing: -0.02em; line-height: 1.05;
+  }
+  .slide-title em {  color: var(--muted); font-weight: 300; }
+  .slide-num { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: 0.12em; }
+
+  /* ── Section divider slides ─────────────────────── */
+  .section-slide { display: flex; flex-direction: column; justify-content: space-between; padding: 56px 72px; }
+  .section-slide.dark { background: var(--bg-deep); color: #f4f3ef; }
+  .section-slide.dark .muted { color: #8a8985; }
+  .section-slide .big-num {
+    font-family: var(--serif); font-size: 240px; line-height: 0.9;
+    letter-spacing: -0.04em; font-weight: 300; color: var(--ink);
+  }
+  .section-slide.dark .big-num { color: #f4f3ef; }
+  .section-slide .big-title {
+    font-family: var(--serif); font-size: 96px; line-height: 1; letter-spacing: -0.03em; font-weight: 400;
+  }
+  .section-slide .big-title em {  color: var(--muted); }
+  .section-slide.dark .big-title em { color: #8a8985; }
+
+  /* ── Generic helpers ────────────────────────────── */
+  .row { display: flex; gap: 24px; }
+  .col { display: flex; flex-direction: column; gap: 24px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .grid-6 { display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; }
+  .muted { color: var(--muted); }
+  .mono { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+
+  /* ── Color swatches ─────────────────────────────── */
+  .swatch { border: 1px solid var(--line); display: flex; flex-direction: column; }
+  .swatch .chip { aspect-ratio: 4/3; }
+  .swatch .meta { padding: 12px 14px; border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 4px; }
+  .swatch .meta .nm { font-size: 13px; font-weight: 500; }
+  .swatch .meta .hx { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+  .scale-row { display: grid; grid-template-columns: repeat(9, 1fr); border: 1px solid var(--line); }
+  .scale-row .step { aspect-ratio: 1/1.1; padding: 10px; display: flex; flex-direction: column; justify-content: space-between; font-family: var(--mono); font-size: 10px; }
+  .scale-row .step span:last-child { opacity: 0.6; }
+
+  /* ── Type specimen rows ─────────────────────────── */
+  .type-row { display: grid; grid-template-columns: 180px 1fr; gap: 24px; align-items: baseline; padding: 18px 0; border-bottom: 1px solid var(--line); }
+  .type-row .meta { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); display: flex; flex-direction: column; gap: 4px; }
+  .type-row .specimen { font-family: var(--serif); }
+
+  /* ── Component cards (in DS slides) ────────────── */
+  .comp-card {
+    border: 1px solid var(--line); padding: 24px;
+    display: flex; flex-direction: column; gap: 18px;
+  }
+  .comp-card .name { font-size: 13px; font-weight: 500; }
+  .comp-card .label-row { display: flex; justify-content: space-between; align-items: center; }
+  .comp-card .demo { background: var(--bg-soft); padding: 24px; display: flex; align-items: center; justify-content: center; gap: 12px; min-height: 88px; flex-wrap: wrap; }
+
+  .btn { font-size: 13.5px; padding: 9px 18px; border-radius: 100px; border: 1px solid var(--ink); display: inline-flex; align-items: center; gap: 8px; cursor: pointer; background: transparent; color: var(--ink); transition: all .2s; }
+  .btn.primary { background: var(--ink); color: var(--bg); }
+  .btn.ghost { border-color: var(--line); color: var(--ink); }
+  .btn.sm { font-size: 12px; padding: 6px 14px; }
+
+  .badge { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border: 1px solid var(--line); border-radius: 100px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .badge.solid { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  .badge.heat { background: var(--heat-1); color: #fff; border-color: var(--heat-1); }
+
+  .input { width: 100%; border: 1px solid var(--line); padding: 10px 14px; font: inherit; font-size: 14px; background: var(--bg); color: var(--ink); }
+  .input:focus { outline: none; border-color: var(--ink); }
+
+  .table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .table th, .table td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); }
+  .table th { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); font-weight: 400; }
+
+  /* ── Logo container ─────────────────────────────── */
+  .seed-logo { display: inline-flex; align-items: center; height: 24px; color: var(--ink); }
+  .seed-logo svg { height: 100%; width: auto; }
+
+  /* ── Mockup chrome (reuses homepage styles) ────── */
+  .mock {
+    width: 100%; height: 100%;
+    background: var(--bg); color: var(--ink);
+    display: flex; flex-direction: column;
+    overflow: hidden;
+    font-family: var(--sans);
+  }
+  .mock.dark { background: var(--bg-deep); color: #f4f3ef; --line: #232220; --muted: #8a8985; --bg-soft: #131313; }
+  .mock-nav {
+    display: flex; align-items: center; gap: 40px;
+    padding: 16px 56px;
+    backdrop-filter: blur(10px);
+  }
+  .mock-nav .links { display: flex; gap: 28px; align-items: center; font-size: 13.5px; color: var(--muted); line-height: 1; }
+  .mock-nav .links span { display: inline-flex; align-items: center; line-height: 1; }
+  .mock-nav .seed-logo { display: inline-flex; align-items: center; }
+  .mock-nav .seed-logo svg { display: block; height: 100%; width: auto; }
+  .mock-nav .links { padding-top: 1px; }
+  .mock-nav .right { margin-left: auto; display: flex; gap: 16px; align-items: center; font-size: 12px; }
+  .mock-nav .lang { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: 0.08em; }
+  .mock-nav .lang b { color: var(--ink); font-weight: 500; }
+  .mock.dark .mock-nav .lang b { color: #f4f3ef; }
+
+  /* small inline svg helpers */
+  .icon-arrow::after { content: "→"; display: inline-block; }
+
+  /* ── Mobile frame ─────────────────────────────── */
+  .phone {
+    width: 320px; height: 680px;
+    background: #0a0a0a;
+    border-radius: 44px;
+    padding: 12px;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.18), 0 0 0 1px rgba(0,0,0,0.04);
+  }
+  .phone-screen {
+    width: 100%; height: 100%;
+    border-radius: 32px;
+    background: var(--bg); color: var(--ink);
+    overflow: hidden;
+    position: relative;
+    font-family: var(--sans);
+  }
+  .phone-statusbar {
+    height: 34px; padding: 12px 22px 0;
+    display: flex; justify-content: space-between; align-items: flex-start;
+    font-family: var(--mono); font-size: 11px; font-weight: 600;
+  }
+
+  /* generative hero illustration (lo-fi for static slides) */
+  .heat-blob {
+    position: absolute; border-radius: 50%; filter: blur(36px);
+    background: radial-gradient(circle, var(--heat-1), transparent 70%);
+    opacity: 0.55; pointer-events: none;
+  }
+
+  .dotgrid {
+    position: absolute; inset: 0;
+    background-image:
+      radial-gradient(circle, rgba(0,0,0,0.06) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+  .mock.dark .dotgrid {
+    background-image:
+      radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px);
+  }
+  .seed-globe {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(circle at 50% 55%, rgba(255,138,60,0.5), transparent 38%),
+      radial-gradient(circle at 50% 55%, rgba(255,138,60,0.25), transparent 56%);
+  }
+  .globe-disc {
+    position: absolute; left: 50%; top: 55%; transform: translate(-50%,-50%);
+    width: 320px; height: 320px;
+    border-radius: 50%;
+    background:
+      conic-gradient(from 0deg, rgba(255,180,80,0.18), rgba(255,138,60,0.05) 25%, rgba(255,180,80,0.22) 50%, rgba(255,138,60,0.05) 75%, rgba(255,180,80,0.18)),
+      var(--bg-soft);
+    border: 1px solid var(--line);
+    box-shadow: inset 0 0 80px rgba(255,180,80,0.15);
+    overflow: hidden;
+    animation: globeSpin 36s linear infinite;
+  }
+  .globe-disc::before {
+    content: ""; position: absolute; inset: 8%;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 35% 35%, rgba(255,210,140,0.45), transparent 55%),
+      radial-gradient(circle at 70% 70%, rgba(255,138,60,0.35), transparent 60%);
+    filter: blur(8px);
+    animation: globePulse 7s ease-in-out infinite;
+  }
+  .globe-disc::after {
+    content: ""; position: absolute; inset: 0;
+    border-radius: 50%;
+    background:
+      repeating-conic-gradient(from 0deg, transparent 0deg 18deg, rgba(255,255,255,0.04) 18deg 18.5deg);
+    mix-blend-mode: overlay;
+    animation: globeSpin 60s linear infinite reverse;
+  }
+  .mock.dark .globe-disc { background:
+      conic-gradient(from 0deg, rgba(255,180,80,0.22), rgba(255,138,60,0.05) 25%, rgba(255,180,80,0.28) 50%, rgba(255,138,60,0.05) 75%, rgba(255,180,80,0.22)),
+      rgba(20,20,20,0.6); border-color: rgba(255,255,255,0.08); }
+  @keyframes globeSpin {
+    to { transform: translate(-50%,-50%) rotate(360deg); }
+  }
+  @keyframes globePulse {
+    0%, 100% { transform: scale(1); opacity: 0.85; }
+    50% { transform: scale(1.06); opacity: 1; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .globe-disc, .globe-disc::before, .globe-disc::after { animation: none; }
+  }
+
+</style>
+</head>
+<body>
+
+<deck-stage aspect="1440x900">
+
+<!-- ═══════════════════════════════════════════════════════════ 01 COVER -->
+<section data-screen-label="01 Cover">
+  <div style="display:grid; grid-template-columns: 1.3fr 1fr; height:100%;">
+    <div style="padding: 72px; display:flex; flex-direction:column; justify-content:space-between; border-right: 1px solid var(--line);">
+      <div style="display:flex; align-items:center; justify-content:space-between;">
+        <div data-seed-logo class="seed-logo" style="height:28px"></div>
+        <div class="mono">Brand & Design System · v1.0 · 2025</div>
+      </div>
+      <div>
+        <div class="mono" style="margin-bottom:24px;">001 / Cover</div>
+        <h1 style="font-family:var(--serif); font-size:108px; line-height:0.96; letter-spacing:-0.035em; font-weight:400; text-wrap:balance;">
+          Seed.<br/>
+          <span style="color: var(--muted); font-weight: 300;">A field guide</span><br/>
+          to the brand.
+        </h1>
+        <p style="margin-top:36px; max-width:520px; font-size:15.5px; line-height:1.65; color:var(--muted);">
+          通用智能研究的视觉语言：从标识系统、字体与色彩，到组件、页面与移动端表达。本手册定义了 Seed 在所有触点上的统一气质 — 严谨、克制、向远处看。
+        </p>
+      </div>
+      <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:32px; padding-top:32px; border-top: 1px solid var(--line);">
+        <div><div class="label">Sections</div><div style="font-family:var(--serif); font-size:30px; margin-top:6px;">07</div></div>
+        <div><div class="label">Pages</div><div style="font-family:var(--serif); font-size:30px; margin-top:6px;">28</div></div>
+        <div><div class="label">Components</div><div style="font-family:var(--serif); font-size:30px; margin-top:6px;">42</div></div>
+        <div><div class="label">Issued</div><div style="font-family:var(--serif); font-size:30px; margin-top:6px;">01.2026</div></div>
+      </div>
+    </div>
+    <div style="position:relative; background: var(--bg-soft); overflow:hidden;">
+      <div class="dotgrid"></div>
+      <div class="seed-globe"></div>
+      <div class="globe-disc"></div>
+      <div class="heat-blob" style="left:55%; top:35%; width:160px; height:160px;"></div>
+      <div class="heat-blob" style="left:30%; top:65%; width:120px; height:120px; opacity:.4;"></div>
+      <div style="position:absolute; bottom:32px; left:32px; right:32px; display:flex; justify-content:space-between; font-family:var(--mono); font-size:11px; color:var(--muted); letter-spacing:0.08em;">
+        <span>SEED · 字节跳动</span>
+        <span>SHEET 001/028</span>
+      </div>
+      <div style="position:absolute; top:32px; left:32px; right:32px; display:flex; justify-content:space-between; font-family:var(--mono); font-size:11px; color:var(--muted); letter-spacing:0.08em;">
+        <span>[ INTELLIGENCE · LIVE ]</span>
+        <span>v.0426</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ 02 INDEX -->
+<section data-screen-label="02 Index" class="slide-pad">
+  <div class="slide-head">
+    <div>
+      <div class="eyebrow">Contents</div>
+      <h2 class="slide-title" style="margin-top:8px;">这本手册<span style="color: var(--muted); font-weight: 300;">包含</span></h2>
+    </div>
+    <div class="slide-num">002 / 028</div>
+  </div>
+
+  <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 56px;">
+    <div>
+      <div class="label" style="margin-bottom:14px;">Part I — Foundations</div>
+      <ol style="list-style:none; counter-reset: idx;">
+        <li style="display:flex; justify-content:space-between; padding:14px 0; border-top:1px solid var(--line); font-size:18px; font-family:var(--serif);"><span>01 &nbsp;品牌定位 Brand Positioning</span><span class="mono">003</span></li>
+        <li style="display:flex; justify-content:space-between; padding:14px 0; border-top:1px solid var(--line); font-size:18px; font-family:var(--serif);"><span>02 &nbsp;标识系统 Logo System</span><span class="mono">004 — 006</span></li>
+        <li style="display:flex; justify-content:space-between; padding:14px 0; border-top:1px solid var(--line); font-size:18px; font-family:var(--serif);"><span>03 &nbsp;色彩 Color</span><span class="mono">007 — 009</span></li>
+        <li style="display:flex; justify-content:space-between; padding:14px 0; border-top:1px solid var(--line); font-size:18px; font-family:var(--serif);"><span>04 &nbsp;字体 Typography</span><span class="mono">010 — 011</span></li>
+        <li style="display:flex; justify-content:space-between; padding:14px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line); font-size:18px; font-family:var(--serif);"><span>05 &nbsp;空间与栅格 Space & Grid</span><span class="mono">012</span></li>
+      </ol>
+    </div>
+    <div>
+      <div class="label" style="margin-bottom:14px;">Part II — System & Application</div>
+      <ol style="list-style:none;">
+        <li style="display:flex; justify-content:space-between; padding:14px 0; border-top:1px solid var(--line); font-size:18px; font-family:var(--serif);"><span>06 &nbsp;组件 Components</span><span class="mono">013 — 014</span></li>
+        <li style="display:flex; justify-content:space-between; padding:14px 0; border-top:1px solid var(--line); font-size:18px; font-family:var(--serif);"><span>07 &nbsp;运动 Motion</span><span class="mono">015</span></li>
+        <li style="display:flex; justify-content:space-between; padding:14px 0; border-top:1px solid var(--line); font-size:18px; font-family:var(--serif);"><span>08 &nbsp;桌面端页面 Desktop Mockups</span><span class="mono">016 — 022</span></li>
+        <li style="display:flex; justify-content:space-between; padding:14px 0; border-top:1px solid var(--line); font-size:18px; font-family:var(--serif);"><span>09 &nbsp;移动端 Mobile</span><span class="mono">023 — 026</span></li>
+        <li style="display:flex; justify-content:space-between; padding:14px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line); font-size:18px; font-family:var(--serif);"><span>10 &nbsp;品牌守则 Voice & Do/Don't</span><span class="mono">027 — 028</span></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ 03 SECTION I -->
+<section data-screen-label="03 Section · Foundations" class="section-slide dark">
+  <div style="display:flex; justify-content:space-between;">
+    <div data-seed-logo class="seed-logo" style="height:24px; color:#f4f3ef;"></div>
+    <div class="mono" style="color:#8a8985;">Part I</div>
+  </div>
+  <div>
+    <div class="big-num">I.</div>
+    <h2 class="big-title" style="margin-top:12px;">基础<span style="color: var(--muted); font-weight: 300;">Foundations</span></h2>
+    <p style="margin-top:24px; font-size:18px; color:#8a8985; max-width:640px; line-height:1.6;">
+      构成 Seed 视觉系统的最小可识别单元 — 标识、色彩、字体、空间。这些规则不是限制，而是让品牌在任何尺度上保持完整性的方法。
+    </p>
+  </div>
+  <div style="display:flex; justify-content:space-between; font-family:var(--mono); font-size:11px; color:#5a5955; letter-spacing:0.1em;">
+    <span>SECTION I · 04 SECTIONS · 09 PAGES</span>
+    <span>003 / 028</span>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ 04 BRAND POSITIONING -->
+<section data-screen-label="04 Positioning" class="slide-pad">
+  <div class="slide-head">
+    <div>
+      <div class="eyebrow">01 · Positioning</div>
+      <h2 class="slide-title" style="margin-top:8px;">把 Seed 一句话<span style="color: var(--muted); font-weight: 300;">说清</span></h2>
+    </div>
+    <div class="slide-num">004 / 028</div>
+  </div>
+  <div style="display:grid; grid-template-columns: 1.2fr 1fr; gap: 64px;">
+    <div>
+      <p style="font-family:var(--serif); font-size:46px; line-height:1.15; letter-spacing:-0.02em; font-weight:400; color:var(--ink); text-wrap:balance;">
+        Seed 是字节跳动的<span style="color: var(--muted); font-weight: 300;">通用智能研究团队</span> — 探索从前沿模型到大规模推理之间，那条把研究变成日常的路。
+      </p>
+      <div style="margin-top:48px; display:grid; grid-template-columns: repeat(3, 1fr); gap:32px;">
+        <div>
+          <div class="label" style="margin-bottom:8px;">Mission</div>
+          <div style="font-size:14.5px; line-height:1.55;">把通用智能从论文带到十亿级用户的产品里。</div>
+        </div>
+        <div>
+          <div class="label" style="margin-bottom:8px;">Audience</div>
+          <div style="font-size:14.5px; line-height:1.55;">研究者、工程师、产品团队、合作机构。</div>
+        </div>
+        <div>
+          <div class="label" style="margin-bottom:8px;">Tone</div>
+          <div style="font-size:14.5px; line-height:1.55;">克制、严谨、有方向感，不夸张。</div>
+        </div>
+      </div>
+    </div>
+    <div style="border:1px solid var(--line); padding:32px; background:var(--bg-soft); display:flex; flex-direction:column; gap:18px;">
+      <div class="label">Pillars · 四条支柱</div>
+      <div>
+        <div style="font-family:var(--serif); font-size:24px;">研究先行</div>
+        <div class="muted" style="font-size:13px; margin-top:4px;">Research-led, not feature-led.</div>
+      </div>
+      <div style="border-top:1px solid var(--line); padding-top:14px;">
+        <div style="font-family:var(--serif); font-size:24px;">规模即真理</div>
+        <div class="muted" style="font-size:13px; margin-top:4px;">Scale is the proof.</div>
+      </div>
+      <div style="border-top:1px solid var(--line); padding-top:14px;">
+        <div style="font-family:var(--serif); font-size:24px;">把权力归还给开发者</div>
+        <div class="muted" style="font-size:13px; margin-top:4px;">Tools, not towers.</div>
+      </div>
+      <div style="border-top:1px solid var(--line); padding-top:14px;">
+        <div style="font-family:var(--serif); font-size:24px;">长期主义</div>
+        <div class="muted" style="font-size:13px; margin-top:4px;">Decades, not quarters.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ 05 LOGO ANATOMY -->
+<section data-screen-label="05 Logo · Anatomy" class="slide-pad">
+  <div class="slide-head">
+    <div>
+      <div class="eyebrow">02 · Logo System</div>
+      <h2 class="slide-title" style="margin-top:8px;">标识<span style="color: var(--muted); font-weight: 300;">解构</span></h2>
+    </div>
+    <div class="slide-num">005 / 028</div>
+  </div>
+  <div style="display:grid; grid-template-columns: 1.4fr 1fr; gap: 56px;">
+    <div style="border:1px solid var(--line); padding: 64px; display:flex; align-items:center; justify-content:center; background:var(--bg-soft); position:relative;">
+      <div data-seed-logo class="seed-logo" style="height:64px;"></div>
+      <!-- annotation lines -->
+      <div style="position:absolute; left:64px; top:32px; right:64px; bottom:32px; pointer-events:none;">
+        <div style="position:absolute; top:0; left:0; right:0; border-top:1px dashed var(--line-2);"></div>
+        <div style="position:absolute; bottom:0; left:0; right:0; border-bottom:1px dashed var(--line-2);"></div>
+        <div class="mono" style="position:absolute; top:-18px; left:0;">cap-height</div>
+        <div class="mono" style="position:absolute; bottom:-18px; right:0;">x-height</div>
+      </div>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:20px;">
+      <div>
+        <div class="label">Components</div>
+        <div style="margin-top:10px; font-size:14.5px; line-height:1.6;">完整标识由三部分组成：左侧的<b>桥形符号</b>（连接研究与产品）、中文字标<b>「字节跳动」</b>、以及拉丁字标<b>Seed</b>，由竖向分隔符串联。</div>
+      </div>
+      <div style="border-top:1px solid var(--line); padding-top:14px;">
+        <div class="label">Clear Space</div>
+        <div style="margin-top:10px; font-size:14.5px; line-height:1.6;">最小留白 = 字标 <code class="mono">x</code>-高度的 <b>1.5×</b>。任何元素不得侵入此区域。</div>
+      </div>
+      <div style="border-top:1px solid var(--line); padding-top:14px;">
+        <div class="label">Minimum Size</div>
+        <div style="margin-top:10px; font-size:14.5px; line-height:1.6;">屏幕：<b>20px</b> 高 / 印刷：<b>8mm</b> 高。低于此尺寸应使用单字符号版本。</div>
+      </div>
+      <div style="border-top:1px solid var(--line); padding-top:14px;">
+        <div class="label">Color</div>
+        <div style="margin-top:10px; font-size:14.5px; line-height:1.6;">仅使用 Ink (#0A0A0A) 或 Bone (#F4F3EF)。禁止彩色填充、渐变、阴影。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ 06 LOGO LOCKUPS -->
+<section data-screen-label="06 Logo · Lockups" class="slide-pad">
+  <div class="slide-head">
+    <div>
+      <div class="eyebrow">02 · Logo System</div>
+      <h2 class="slide-title" style="margin-top:8px;">锁定形式<span style="color: var(--muted); font-weight: 300;">Lockups</span></h2>
+    </div>
+    <div class="slide-num">006 / 028</div>
+  </div>
+  <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:24px;">
+    <div style="border:1px solid var(--line); padding:48px; aspect-ratio:1.6/1; display:flex; align-items:center; justify-content:center; position:relative;">
+      <div data-seed-logo class="seed-logo" style="height:32px;"></div>
+      <span class="mono" style="position:absolute; top:14px; left:18px;">Primary · Horizontal</span>
+    </div>
+    <div style="border:1px solid var(--line); padding:48px; aspect-ratio:1.6/1; display:flex; align-items:center; justify-content:center; position:relative; background:var(--bg-deep); color:#f4f3ef;">
+      <div data-seed-logo class="seed-logo" style="height:32px; color:#f4f3ef;"></div>
+      <span class="mono" style="position:absolute; top:14px; left:18px; color:#8a8985;">Inverse · Dark</span>
+    </div>
+    <div style="border:1px solid var(--line); padding:48px; aspect-ratio:1.6/1; display:flex; align-items:center; justify-content:center; position:relative;">
+      <!-- monogram only -->
+      <div style="font-family:var(--serif); font-size:120px; line-height:1; font-weight:400; letter-spacing:-0.02em;">S</div>
+      <span class="mono" style="position:absolute; top:14px; left:18px;">Monogram · Compact</span>
+    </div>
+    <div style="border:1px solid var(--line); padding:48px; aspect-ratio:1.6/1; display:flex; align-items:center; justify-content:center; position:relative; background:var(--bg-soft);">
+      <div style="display:flex; flex-direction:column; align-items:center; gap:16px;">
+        <div data-seed-logo class="seed-logo" style="height:24px;"></div>
+        <div class="mono" style="font-size:10px;">— A division of ByteDance Research</div>
+      </div>
+      <span class="mono" style="position:absolute; top:14px; left:18px;">Endorsed · Co-signed</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ 07 COLOR · PRIMARY -->
+<section data-screen-label="07 Color · Primary" class="slide-pad">
+  <div class="slide-head">
+    <div>
+      <div class="eyebrow">03 · Color</div>
+      <h2 class="slide-title" style="margin-top:8px;">主色<span style="color: var(--muted); font-weight: 300;">Primary palette</span></h2>
+    </div>
+    <div class="slide-num">007 / 028</div>
+  </div>
+  <p style="max-width:760px; color:var(--muted); margin-bottom:32px;">两种墨与一道热光。Seed 的色彩极简 — 黑白做骨，热橙在数据可视化与重点强调中作为唯一彩色记号。</p>
+  <div class="grid-4">
+    <div class="swatch"><div class="chip" style="background:#0a0a0a;"></div><div class="meta"><div class="nm">Ink</div><div class="hx">#0A0A0A · oklch 0.13 0 0</div><div class="hx" style="color:var(--ink);">Primary text · brand mark</div></div></div>
+    <div class="swatch"><div class="chip" style="background:#f4f3ef;"></div><div class="meta"><div class="nm">Bone</div><div class="hx">#F4F3EF</div><div class="hx" style="color:var(--ink);">Dark-mode ink · paper tone</div></div></div>
+    <div class="swatch"><div class="chip" style="background:#ff8a3c;"></div><div class="meta"><div class="nm">Heat / 热</div><div class="hx">#FF8A3C</div><div class="hx" style="color:var(--ink);">Inference accent · single-use</div></div></div>
+    <div class="swatch"><div class="chip" style="background:#6b6b68;"></div><div class="meta"><div class="nm">Stone</div><div class="hx">#6B6B68</div><div class="hx" style="color:var(--ink);">Body muted · captions</div></div></div>
+  </div>
+
+  <div style="margin-top:40px; display:grid; grid-template-columns: 1fr 1fr; gap:32px;">
+    <div>
+      <div class="label" style="margin-bottom:12px;">Surfaces (Light)</div>
+      <div class="scale-row" style="grid-template-columns: repeat(4, 1fr);">
+        <div class="step" style="background:#ffffff;"><span>00 · BG</span><span>#FFFFFF</span></div>
+        <div class="step" style="background:#f6f6f4;"><span>01 · Soft</span><span>#F6F6F4</span></div>
+        <div class="step" style="background:#efeeea;"><span>02 · Alt</span><span>#EFEEEA</span></div>
+        <div class="step" style="background:#e4e3df;"><span>03 · Line</span><span>#E4E3DF</span></div>
+      </div>
+    </div>
+    <div>
+      <div class="label" style="margin-bottom:12px;">Surfaces (Dark)</div>
+      <div class="scale-row" style="grid-template-columns: repeat(4, 1fr);">
+        <div class="step" style="background:#0a0a0a; color:#f4f3ef;"><span>00 · BG</span><span>#0A0A0A</span></div>
+        <div class="step" style="background:#131313; color:#f4f3ef;"><span>01 · Soft</span><span>#131313</span></div>
+        <div class="step" style="background:#1a1a1a; color:#f4f3ef;"><span>02 · Alt</span><span>#1A1A1A</span></div>
+        <div class="step" style="background:#232220; color:#f4f3ef;"><span>03 · Line</span><span>#232220</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ 08 COLOR · SCALE -->
+<section data-screen-label="08 Color · Scale" class="slide-pad">
+  <div class="slide-head">
+    <div>
+      <div class="eyebrow">03 · Color</div>
+      <h2 class="slide-title" style="margin-top:8px;">中性色阶<span style="color: var(--muted); font-weight: 300;">Neutral scale</span></h2>
+    </div>
+    <div class="slide-num">008 / 028</div>
+  </div>
+  <div class="scale-row">
+    <div class="step" style="background:#ffffff;"><span>50</span><span>#FFFFFF</span></div>
+    <div class="step" style="background:#f6f6f4;"><span>100</span><span>#F6F6F4</span></div>
+    <div class="step" style="background:#efeeea;"><span>200</span><span>#EFEEEA</span></div>
+    <div class="step" style="background:#e4e3df;"><span>300</span><span>#E4E3DF</span></div>
+    <div class="step" style="background:#d4d3cf;"><span>400</span><span>#D4D3CF</span></div>
+    <div class="step" style="background:#9a9a96; color:#fff;"><span>500</span><span>#9A9A96</span></div>
+    <div class="step" style="background:#6b6b68; color:#fff;"><span>600</span><span>#6B6B68</span></div>
+    <div class="step" style="background:#1a1a1a; color:#fff;"><span>800</span><span>#1A1A1A</span></div>
+    <div class="step" style="background:#0a0a0a; color:#fff;"><span>900</span><span>#0A0A0A</span></div>
+  </div>
+  <div style="margin-top:40px;">
+    <div class="label" style="margin-bottom:12px;">Heat scale (data-viz only)</div>
+    <div class="scale-row" style="grid-template-columns: repeat(7, 1fr);">
+      <div class="step" style="background:#fff1d6;"><span>50</span><span>#FFF1D6</span></div>
+      <div class="step" style="background:#ffe1a8;"><span>100</span><span>#FFE1A8</span></div>
+      <div class="step" style="background:#ffc97a;"><span>200</span><span>#FFC97A</span></div>
+      <div class="step" style="background:#ffb347; color:#1a1a1a;"><span>300</span><span>#FFB347</span></div>
+      <div class="step" style="background:#ff8a3c; color:#fff;"><span>500</span><span>#FF8A3C</span></div>
+      <div class="step" style="background:#e26a18; color:#fff;"><span>700</span><span>#E26A18</span></div>
+      <div class="step" style="background:#a84a08; color:#fff;"><span>900</span><span>#A84A08</span></div>
+    </div>
+  </div>
+  <div style="margin-top:40px; padding-top:24px; border-top:1px solid var(--line); display:grid; grid-template-columns: repeat(3, 1fr); gap:32px;">
+    <div><div class="label">Status · Success</div><div style="display:flex; gap:6px; margin-top:10px;"><div style="width:32px; height:32px; background:#1f8a5b;"></div><div class="mono" style="align-self:center;">#1F8A5B</div></div></div>
+    <div><div class="label">Status · Warning</div><div style="display:flex; gap:6px; margin-top:10px;"><div style="width:32px; height:32px; background:#c47900;"></div><div class="mono" style="align-self:center;">#C47900</div></div></div>
+    <div><div class="label">Status · Danger</div><div style="display:flex; gap:6px; margin-top:10px;"><div style="width:32px; height:32px; background:#b8311a;"></div><div class="mono" style="align-self:center;">#B8311A</div></div></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ 09 COLOR · USAGE -->
+<section data-screen-label="09 Color · Usage" class="slide-pad">
+  <div class="slide-head">
+    <div>
+      <div class="eyebrow">03 · Color</div>
+      <h2 class="slide-title" style="margin-top:8px;">用色<span style="color: var(--muted); font-weight: 300;">原则</span></h2>
+    </div>
+    <div class="slide-num">009 / 028</div>
+  </div>
+  <div class="grid-2" style="margin-bottom:24px;">
+    <div style="border:1px solid var(--line); padding:32px;">
+      <div class="label" style="color:#1f8a5b;">✓ Do</div>
+      <ul style="list-style:none; margin-top:16px; display:flex; flex-direction:column; gap:14px; font-size:14.5px; line-height:1.55;">
+        <li>· 大面积使用 <b>Bone (#F4F3EF)</b> 与 <b>Ink (#0A0A0A)</b> 作为基底。</li>
+        <li>· <b>Heat 橙</b> 仅出现在数据可视化、推理状态或单一强调点。</li>
+        <li>· 一个版面内 Heat 出现的位置不超过 <b>1 处</b>。</li>
+        <li>· 暗色模式下 Heat 提亮 <b>5–8% L</b> 以维持可识别度。</li>
+      </ul>
+    </div>
+    <div style="border:1px solid var(--line); padding:32px;">
+      <div class="label" style="color:#b8311a;">✗ Don't</div>
+      <ul style="list-style:none; margin-top:16px; display:flex; flex-direction:column; gap:14px; font-size:14.5px; line-height:1.55;">
+        <li>· 不使用渐变、彩虹色、第二品牌色 — Heat 是唯一彩色记号。</li>
+        <li>· 不在大段正文中使用 Heat 作为前景。</li>
+        <li>· 不使用饱和度 < 70% 的橙作为替代色。</li>
+        <li>· 不在 Logo 上叠加任何颜色滤镜。</li>
+      </ul>
+    </div>
+  </div>
+  <div style="border:1px solid var(--line); padding:24px; display:grid; grid-template-columns: 1fr 1fr 1fr; gap:24px; align-items:stretch;">
+    <div style="background:#f6f6f4; padding:24px; aspect-ratio:1.4/1; display:flex; flex-direction:column; justify-content:space-between;">
+      <div class="mono">EXAMPLE · Editorial</div>
+      <div style="font-family:var(--serif); font-size:30px; line-height:1.1; letter-spacing:-0.02em;">研究的<span style="color: var(--muted); font-weight: 300;">边界</span>在哪。</div>
+      <div style="display:flex; gap:8px; align-items:center; font-size:12px; color:var(--muted);"><span style="width:8px; height:8px; background:#ff8a3c; border-radius:50%;"></span> NEW</div>
+    </div>
+    <div style="background:#0a0a0a; padding:24px; aspect-ratio:1.4/1; color:#f4f3ef; display:flex; flex-direction:column; justify-content:space-between;">
+      <div class="mono" style="color:#8a8985;">EXAMPLE · Inference</div>
+      <div style="display:flex; align-items:center; gap:14px;">
+        <div style="width:60px; height:60px; border-radius:50%; background:radial-gradient(circle, #ff8a3c, transparent 70%);"></div>
+        <div><div style="font-family:var(--serif); font-size:24px;">QPS 38,420</div><div class="mono" style="color:#8a8985;">SINGAPORE · 42ms</div></div>
+      </div>
+      <div class="mono" style="color:#8a8985;">SEED / 001</div>
+    </div>
+    <div style="background:#fff1d6; padding:24px; aspect-ratio:1.4/1; display:flex; flex-direction:column; justify-content:space-between;">
+      <div class="mono" style="color:#a84a08;">EXAMPLE · Heatmap</div>
+      <div style="display:grid; grid-template-columns: repeat(8, 1fr); gap:3px;">
+        <!-- mini heatmap -->
+        <span style="aspect-ratio:1; background:#fff1d6;"></span><span style="aspect-ratio:1; background:#ffe1a8;"></span><span style="aspect-ratio:1; background:#ffc97a;"></span><span style="aspect-ratio:1; background:#ffb347;"></span><span style="aspect-ratio:1; background:#ff8a3c;"></span><span style="aspect-ratio:1; background:#e26a18;"></span><span style="aspect-ratio:1; background:#ffb347;"></span><span style="aspect-ratio:1; background:#ffc97a;"></span>
+        <span style="aspect-ratio:1; background:#ffe1a8;"></span><span style="aspect-ratio:1; background:#ffc97a;"></span><span style="aspect-ratio:1; background:#ff8a3c;"></span><span style="aspect-ratio:1; background:#e26a18;"></span><span style="aspect-ratio:1; background:#a84a08;"></span><span style="aspect-ratio:1; background:#e26a18;"></span><span style="aspect-ratio:1; background:#ff8a3c;"></span><span style="aspect-ratio:1; background:#ffc97a;"></span>
+        <span style="aspect-ratio:1; background:#fff1d6;"></span><span style="aspect-ratio:1; background:#ffe1a8;"></span><span style="aspect-ratio:1; background:#ffc97a;"></span><span style="aspect-ratio:1; background:#ffb347;"></span><span style="aspect-ratio:1; background:#ff8a3c;"></span><span style="aspect-ratio:1; background:#ffb347;"></span><span style="aspect-ratio:1; background:#ffc97a;"></span><span style="aspect-ratio:1; background:#ffe1a8;"></span>
+      </div>
+      <div class="mono" style="color:#a84a08;">REGION · APAC</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ 10 TYPE · SCALE -->
+<section data-screen-label="10 Type · Scale" class="slide-pad">
+  <div class="slide-head">
+    <div>
+      <div class="eyebrow">04 · Typography</div>
+      <h2 class="slide-title" style="margin-top:8px;">字号阶梯<span style="color: var(--muted); font-weight: 300;">Type scale</span></h2>
+    </div>
+    <div class="slide-num">010 / 028</div>
+  </div>
+  <p style="color:var(--muted); margin-bottom:24px;">单一字体家族：<b>苹方 PingFang SC</b>。中英混排无切换；标题使用细斜体作为强调。所有 Web 端尺寸均为 px。</p>
+  <div>
+    <div class="type-row">
+      <div class="meta"><span>Display / D1</span><span>96 / 96 · –0.03em</span></div>
+      <div class="specimen" style="font-size:96px; line-height:0.96; letter-spacing:-0.03em;">把研究<span style="color: var(--muted); font-weight: 300;">放大</span>。</div>
+    </div>
+    <div class="type-row">
+      <div class="meta"><span>Display / D2</span><span>72 / 76 · –0.025em</span></div>
+      <div class="specimen" style="font-size:72px; line-height:1.05; letter-spacing:-0.025em;">通用智能的边界</div>
+    </div>
+    <div class="type-row">
+      <div class="meta"><span>Title / T1</span><span>44 / 52 · –0.02em</span></div>
+      <div class="specimen" style="font-size:44px; line-height:1.18; letter-spacing:-0.02em;">六个方向，一个共同的问题</div>
+    </div>
+    <div class="type-row">
+      <div class="meta"><span>Title / T2</span><span>30 / 38</span></div>
+      <div class="specimen" style="font-size:30px; line-height:1.25; letter-spacing:-0.015em;">阅读模型的训练日记</div>
+    </div>
+    <div class="type-row">
+      <div class="meta"><span>Body / B1</span><span>16 / 26</span></div>
+      <div style="font-family:var(--sans); font-size:16px; line-height:1.65; max-width:680px;">大模型不是终点，而是新的入口。Seed 的工作横跨语言、视觉、强化学习与系统 — 把抽象的能力变成可被产品调用、被开发者扩展的接口。</div>
+    </div>
+    <div class="type-row">
+      <div class="meta"><span>Body / B2 · muted</span><span>14 / 22</span></div>
+      <div style="font-family:var(--sans); font-size:14px; line-height:1.6; color:var(--muted); max-width:680px;">用于次要正文、卡片描述、注释。</div>
+    </div>
+    <div class="type-row" style="border-bottom:none;">
+      <div class="meta"><span>Mono / Caption</span><span>11 / 16 · 0.12em · UC</span></div>
+      <div style="font-family:var(--mono); font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:var(--muted);">[ DOUBAO · LIVE INFERENCE ] · 042ms · QPS 38,420</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ 11 TYPE · USAGE -->
+<section data-screen-label="11 Type · Usage" class="slide-pad">
+  <div class="slide-head">
+    <div>
+      <div class="eyebrow">04 · Typography</div>
+      <h2 class="slide-title" style="margin-top:8px;">用字<span style="color: var(--muted); font-weight: 300;">原则</span></h2>
+    </div>
+    <div class="slide-num">011 / 028</div>
+  </div>
+  <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 32px;">
+    <div>
+      <div class="label" style="margin-bottom:12px;">Hierarchy</div>
+      <ul style="list-style:none; display:flex; flex-direction:column; gap:14px; font-size:14.5px; line-height:1.55;">
+        <li>· 单一版面 ≤ <b>3 个</b> 字号层级。</li>
+        <li>· 标题与正文之间留白 ≥ <b>32px</b>。</li>
+        <li>· Display 仅用于封面、版头与 Section 分隔。</li>
+        <li>· Mono 仅用于元数据、版本号、状态指示。</li>
+      </ul>
+    </div>
+    <div>
+      <div class="label" style="margin-bottom:12px;">Italic & Emphasis</div>
+      <ul style="list-style:none; display:flex; flex-direction:column; gap:14px; font-size:14.5px; line-height:1.55;">
+        <li>· <span style="color: var(--muted); font-weight: 300;">斜体灰</span> = 概念性强调（"探索<span style="color: var(--muted); font-weight: 300;">边界</span>"）。</li>
+        <li>· 不使用下划线、不使用全大写中文。</li>
+        <li>· 数字与量词之间用 <code class="mono">·</code> 而非空格。</li>
+        <li>· 中英混排间距由系统控制，不手动加空格。</li>
+      </ul>
+    </div>
+  </div>
+  <div style="margin-top:32px; border:1px solid var(--line); padding:32px; display:grid; grid-template-columns: 1fr 1fr; gap:32px;">
+    <div>
+      <div class="label" style="color:#1f8a5b; margin-bottom:14px;">✓ 好的版式</div>
+      <div style="font-family:var(--serif); font-size:30px; line-height:1.18; letter-spacing:-0.02em;">阅读模型的<span style="color: var(--muted); font-weight: 300;">训练日记</span></div>
+      <div class="mono" style="margin-top:8px;">RESEARCH NOTE · 04.26</div>
+      <div style="margin-top:14px; font-size:14px; color:var(--muted); line-height:1.6;">从 1.5B 到 175B，一周一篇关于 scaling 行为的观察笔记。</div>
+    </div>
+    <div>
+      <div class="label" style="color:#b8311a; margin-bottom:14px;">✗ 避免</div>
+      <div style="font-family:var(--serif); font-size:24px; font-weight:700; text-decoration:underline;">阅 读 模 型 的 训 练 日 记！</div>
+      <div style="margin-top:14px; font-size:14px; color:var(--muted); line-height:1.6;">手动间距、加重、惊叹号、下划线 — 这是 Seed 不使用的语气。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ 12 SPACE & GRID -->
+<section data-screen-label="12 Space & Grid" class="slide-pad">
+  <div class="slide-head">
+    <div>
+      <div class="eyebrow">05 · Space & Grid</div>
+      <h2 class="slide-title" style="margin-top:8px;">空间与<span style="color: var(--muted); font-weight: 300;">栅格</span></h2>
+    </div>
+    <div class="slide-num">012 / 028</div>
+  </div>
+  <div style="display:grid; grid-template-columns: 1.2fr 1fr; gap:48px;">
+    <div>
+      <div class="label" style="margin-bottom:14px;">Spacing scale (4-pt baseline)</div>
+      <div style="display:flex; flex-direction:column; gap:10px;">
+        <div style="display:flex; align-items:center; gap:14px;"><div style="width:4px; height:14px; background:#ff8a3c;"></div><span class="mono">04 · 4px</span><span class="muted" style="font-size:13px;">inline icon gap</span></div>
+        <div style="display:flex; align-items:center; gap:14px;"><div style="width:8px; height:14px; background:#ff8a3c;"></div><span class="mono">08 · 8px</span><span class="muted" style="font-size:13px;">tight stacks</span></div>
+        <div style="display:flex; align-items:center; gap:14px;"><div style="width:12px; height:14px; background:#ff8a3c;"></div><span class="mono">12 · 12px</span><span class="muted" style="font-size:13px;">control padding</span></div>
+        <div style="display:flex; align-items:center; gap:14px;"><div style="width:16px; height:14px; background:#ff8a3c;"></div><span class="mono">16 · 16px</span><span class="muted" style="font-size:13px;">card inner</span></div>
+        <div style="display:flex; align-items:center; gap:14px;"><div style="width:24px; height:14px; background:#ff8a3c;"></div><span class="mono">24 · 24px</span><span class="muted" style="font-size:13px;">component gap</span></div>
+        <div style="display:flex; align-items:center; gap:14px;"><div style="width:32px; height:14px; background:#ff8a3c;"></div><span class="mono">32 · 32px</span><span class="muted" style="font-size:13px;">section break</span></div>
+        <div style="display:flex; align-items:center; gap:14px;"><div style="width:48px; height:14px; background:#ff8a3c;"></div><span class="mono">48 · 48px</span><span class="muted" style="font-size:13px;">block gap</span></div>
+        <div style="display:flex; align-items:center; gap:14px;"><div style="width:72px; height:14px; background:#ff8a3c;"></div><span class="mono">72 · 72px</span><span class="muted" style="font-size:13px;">page padding</span></div>
+        <div style="display:flex; align-items:center; gap:14px;"><div style="width:120px; height:14px; background:#ff8a3c;"></div><span class="mono">120 · 120px</span><span class="muted" style="font-size:13px;">section padding</span></div>
+      </div>
+      <div style="margin-top:32px;">
+        <div class="label" style="margin-bottom:10px;">Radii</div>
+        <div style="display:flex; gap:12px; align-items:center;">
+          <div style="width:48px; height:48px; border:1px solid var(--ink); border-radius:0;"></div>
+          <div style="width:48px; height:48px; border:1px solid var(--ink); border-radius:2px;"></div>
+          <div style="width:48px; height:48px; border:1px solid var(--ink); border-radius:8px;"></div>
+          <div style="width:48px; height:48px; border:1px solid var(--ink); border-radius:100px;"></div>
+        </div>
+        <div class="mono" style="margin-top:8px;">0 · 2 · 8 · pill (only for buttons & badges)</div>
+      </div>
+    </div>
+    <div>
+      <div class="label" style="margin-bottom:14px;">Desktop · 12-col grid</div>
+      <div style="border:1px solid var(--line); padding:24px 16px; aspect-ratio: 1.6/1; background:var(--bg-soft); position:relative;">
+        <div style="display:grid; grid-template-columns: repeat(12, 1fr); gap:8px; height:100%;">
+          <div style="background:rgba(255,138,60,0.18); border:1px solid rgba(255,138,60,0.4);"></div>
+          <div style="background:rgba(255,138,60,0.18); border:1px solid rgba(255,138,60,0.4);"></div>
+          <div style="background:rgba(255,138,60,0.18); border:1px solid rgba(255,138,60,0.4);"></div>
+          <div style="background:rgba(255,138,60,0.18); border:1px solid rgba(255,138,60,0.4);"></div>
+          <div style="background:rgba(255,138,60,0.18); border:1px solid rgba(255,138,60,0.4);"></div>
+          <div style="background:rgba(255,138,60,0.18); border:1px solid rgba(255,138,60,0.4);"></div>
+          <div style="background:rgba(255,138,60,0.18); border:1px solid rgba(255,138,60,0.4);"></div>
+          <div style="background:rgba(255,138,60,0.18); border:1px solid rgba(255,138,60,0.4);"></div>
+          <div style="background:rgba(255,138,60,0.18); border:1px solid rgba(255,138,60,0.4);"></div>
+          <div style="background:rgba(255,138,60,0.18); border:1px solid rgba(255,138,60,0.4);"></div>
+          <div style="background:rgba(255,138,60,0.18); border:1px solid rgba(255,138,60,0.4);"></div>
+          <div style="background:rgba(255,138,60,0.18); border:1px solid rgba(255,138,60,0.4);"></div>
+        </div>
+      </div>
+      <div class="mono" style="margin-top:10px;">Max-width 1440 · margin 72 · gutter 24 · column ≈ 88</div>
+      <div style="margin-top:24px;">
+        <div class="label" style="margin-bottom:10px;">Mobile · 4-col</div>
+        <div style="border:1px solid var(--line); padding:16px; aspect-ratio:0.5/1; max-width:160px; background:var(--bg-soft);">
+          <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:6px; height:100%;">
+            <div style="background:rgba(255,138,60,0.18);"></div><div style="background:rgba(255,138,60,0.18);"></div><div style="background:rgba(255,138,60,0.18);"></div><div style="background:rgba(255,138,60,0.18);"></div>
+          </div>
+        </div>
+        <div class="mono" style="margin-top:8px;">Margin 20 · gutter 12</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ 13 SECTION II -->
+<section data-screen-label="13 Section · System" class="section-slide dark">
+  <div style="display:flex; justify-content:space-between;">
+    <div data-seed-logo class="seed-logo" style="height:24px; color:#f4f3ef;"></div>
+    <div class="mono" style="color:#8a8985;">Part II</div>
+  </div>
+  <div>
+    <div class="big-num">II.</div>
+    <h2 class="big-title" style="margin-top:12px;">系统<span style="color: var(--muted); font-weight: 300;">System</span> · 应用<span style="color: var(--muted); font-weight: 300;">Application</span></h2>
+    <p style="margin-top:24px; font-size:18px; color:#8a8985; max-width:640px; line-height:1.6;">
+      把基础变成可复用的零件 — 组件、运动、桌面与移动端的实际形态。
+    </p>
+  </div>
+  <div style="display:flex; justify-content:space-between; font-family:var(--mono); font-size:11px; color:#5a5955; letter-spacing:0.1em;">
+    <span>SECTION II · 06 SECTIONS · 16 PAGES</span>
+    <span>013 / 028</span>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ 14 COMPONENTS · CONTROLS -->
+<section data-screen-label="14 Components · Controls" class="slide-pad">
+  <div class="slide-head">
+    <div>
+      <div class="eyebrow">06 · Components</div>
+      <h2 class="slide-title" style="margin-top:8px;">控件<span style="color: var(--muted); font-weight: 300;">Controls</span></h2>
+    </div>
+    <div class="slide-num">014 / 028</div>
+  </div>
+  <div class="grid-3">
+    <div class="comp-card">
+      <div class="label-row"><span class="name">Buttons</span><span class="mono">btn / btn.primary</span></div>
+      <div class="demo" style="flex-direction:column; gap:10px;">
+        <button class="btn primary">查看研究 →</button>
+        <button class="btn">查看研究 →</button>
+        <button class="btn ghost">取消</button>
+      </div>
+    </div>
+    <div class="comp-card">
+      <div class="label-row"><span class="name">Badges</span><span class="mono">badge</span></div>
+      <div class="demo" style="flex-direction:column; gap:8px;">
+        <span class="badge">RESEARCH NOTE</span>
+        <span class="badge solid">NEW</span>
+        <span class="badge heat">LIVE</span>
+      </div>
+    </div>
+    <div class="comp-card">
+      <div class="label-row"><span class="name">Input</span><span class="mono">input</span></div>
+      <div class="demo" style="flex-direction:column; gap:8px;">
+        <input class="input" value="email@bytedance.com" />
+        <input class="input" placeholder="搜索研究..." />
+      </div>
+    </div>
+    <div class="comp-card">
+      <div class="label-row"><span class="name">Tag · Filter</span><span class="mono">tag</span></div>
+      <div class="demo" style="gap:6px;">
+        <span style="border:1px solid var(--ink); padding:5px 12px; border-radius:100px; font-size:12px;">All</span>
+        <span style="border:1px solid var(--line); padding:5px 12px; border-radius:100px; font-size:12px; color:var(--muted);">Language</span>
+        <span style="border:1px solid var(--line); padding:5px 12px; border-radius:100px; font-size:12px; color:var(--muted);">Vision</span>
+        <span style="border:1px solid var(--line); padding:5px 12px; border-radius:100px; font-size:12px; color:var(--muted);">RL</span>
+      </div>
+    </div>
+    <div class="comp-card">
+      <div class="label-row"><span class="name">Progress</span><span class="mono">progress</span></div>
+      <div class="demo" style="flex-direction:column; gap:8px; width:100%;">
+        <div style="width:100%; height:3px; background:var(--line); position:relative;"><div style="width:62%; height:100%; background:var(--ink);"></div></div>
+        <div style="width:100%; height:3px; background:var(--line); position:relative;"><div style="width:38%; height:100%; background:var(--heat-1);"></div></div>
+        <div class="mono" style="text-align:right;">62% · 38% inference</div>
+      </div>
+    </div>
+    <div class="comp-card">
+      <div class="label-row"><span class="name">Toggle / Theme</span><span class="mono">toggle</span></div>
+      <div class="demo">
+        <span style="display:inline-flex; align-items:center; gap:10px; font-size:13px;">
+          <span style="width:36px; height:18px; background:var(--ink); border-radius:100px; position:relative;"><span style="position:absolute; right:2px; top:2px; width:14px; height:14px; background:#fff; border-radius:50%;"></span></span>
+          Dark mode
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ 15 COMPONENTS · CARDS -->
+<section data-screen-label="15 Components · Cards" class="slide-pad">
+  <div class="slide-head">
+    <div>
+      <div class="eyebrow">06 · Components</div>
+      <h2 class="slide-title" style="margin-top:8px;">卡片与<span style="color: var(--muted); font-weight: 300;">导航</span></h2>
+    </div>
+    <div class="slide-num">015 / 028</div>
+  </div>
+  <div style="display:grid; grid-template-columns: 1.2fr 1fr; gap:24px;">
+    <!-- featured / paper card -->
+    <div style="border:1px solid var(--line); display:grid; grid-template-columns: 1.4fr 1fr;">
+      <div style="background:var(--bg-soft); aspect-ratio:4/3; position:relative; overflow:hidden;">
+        <div class="dotgrid"></div>
+        <div class="heat-blob" style="left:30%; top:50%; width:140px; height:140px;"></div>
+      </div>
+      <div style="padding:32px; display:flex; flex-direction:column; gap:16px; justify-content:space-between;">
+        <div>
+          <div class="mono">FEATURED · MODEL</div>
+          <h3 style="font-family:var(--serif); font-size:32px; line-height:1.1; letter-spacing:-0.02em; margin-top:14px;">Doubao 1.5 Pro</h3>
+          <p style="margin-top:12px; font-size:14px; color:var(--muted); line-height:1.55;">在多项推理基准上达到 SOTA，为亿级日活提供低延迟服务。</p>
+        </div>
+        <div style="font-size:13px; display:inline-flex; align-items:center; gap:6px;">了解模型 <span style="display:inline-block; width:18px; height:1px; background:var(--ink);"></span> →</div>
+      </div>
+    </div>
+    <!-- list card -->
+    <div style="border:1px solid var(--line); padding:32px; display:flex; flex-direction:column; gap:0;">
+      <div class="label" style="margin-bottom:18px;">最近发表</div>
+      <div style="display:flex; flex-direction:column;">
+        <a style="padding:14px 0; border-top:1px solid var(--line); display:flex; justify-content:space-between; gap:14px; align-items:baseline;">
+          <span style="font-family:var(--serif); font-size:17px; line-height:1.3;">Long-Horizon Reasoning via Discrete Memory</span>
+          <span class="mono" style="white-space:nowrap;">04.26</span>
+        </a>
+        <a style="padding:14px 0; border-top:1px solid var(--line); display:flex; justify-content:space-between; gap:14px; align-items:baseline;">
+          <span style="font-family:var(--serif); font-size:17px; line-height:1.3;">Sparse Attention 的隐含正则</span>
+          <span class="mono" style="white-space:nowrap;">04.18</span>
+        </a>
+        <a style="padding:14px 0; border-top:1px solid var(--line); display:flex; justify-content:space-between; gap:14px; align-items:baseline;">
+          <span style="font-family:var(--serif); font-size:17px; line-height:1.3;">Generalist Robot Policies in the Wild</span>
+          <span class="mono" style="white-space:nowrap;">04.09</span>
+        </a>
+        <a style="padding:14px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line); display:flex; justify-content:space-between; gap:14px; align-items:baseline;">
+          <span style="font-family:var(--serif); font-size:17px; line-height:1.3;">RLHF 之后：来自部署的反馈</span>
+          <span class="mono" style="white-space:nowrap;">03.30</span>
+        </a>
+      </div>
+      <a style="margin-top:24px; font-size:13px; display:inline-flex; gap:6px; align-items:center;">查看全部 <span>→</span></a>
+    </div>
+  </div>
+
+  <div style="margin-top:24px; display:grid; grid-template-columns: repeat(3, 1fr); gap:24px;">
+    <div style="border:1px solid var(--line); padding:24px;">
+      <div class="mono">RESEARCH AREA</div>
+      <h4 style="font-family:var(--serif); font-size:22px; margin-top:14px;">Foundation Models</h4>
+      <p style="margin-top:8px; font-size:13.5px; color:var(--muted); line-height:1.55;">规模、训练效率与 emergent behavior。</p>
+      <div class="mono" style="margin-top:18px;">12 PAPERS · 04 MODELS</div>
+    </div>
+    <div style="border:1px solid var(--line); padding:24px;">
+      <div class="mono">RESEARCH AREA</div>
+      <h4 style="font-family:var(--serif); font-size:22px; margin-top:14px;">Multimodal</h4>
+      <p style="margin-top:8px; font-size:13.5px; color:var(--muted); line-height:1.55;">把语言、视觉、音频作为同一个表征。</p>
+      <div class="mono" style="margin-top:18px;">08 PAPERS · 02 MODELS</div>
+    </div>
+    <div style="border:1px solid var(--line); padding:24px;">
+      <div class="mono">RESEARCH AREA</div>
+      <h4 style="font-family:var(--serif); font-size:22px; margin-top:14px;">Agents</h4>
+      <p style="margin-top:8px; font-size:13.5px; color:var(--muted); line-height:1.55;">长期任务、工具使用与环境交互。</p>
+      <div class="mono" style="margin-top:18px;">06 PAPERS · 01 MODEL</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ 16 MOTION -->
+<section data-screen-label="16 Motion" class="slide-pad">
+  <div class="slide-head">
+    <div>
+      <div class="eyebrow">07 · Motion</div>
+      <h2 class="slide-title" style="margin-top:8px;">运动<span style="color: var(--muted); font-weight: 300;">原则</span></h2>
+    </div>
+    <div class="slide-num">016 / 028</div>
+  </div>
+  <p style="color:var(--muted); margin-bottom:28px; max-width:780px;">运动只为表达三件事：<b>位置感</b>（你在哪）、<b>因果</b>（什么导致了什么）、<b>系统的活</b>（推理在发生）。其他都是装饰。</p>
+  <div class="grid-3" style="margin-bottom:32px;">
+    <div style="border:1px solid var(--line); padding:24px;">
+      <div class="label">Easing · Standard</div>
+      <div style="font-family:var(--mono); font-size:15px; margin-top:10px;">cubic-bezier(0.2, 0.8, 0.2, 1)</div>
+      <div style="margin-top:18px; height:60px; background:var(--bg-soft); position:relative;">
+        <svg viewBox="0 0 200 60" style="width:100%; height:100%;"><path d="M0,55 C40,55 40,5 200,5" stroke="#0a0a0a" fill="none" stroke-width="1.5"/></svg>
+      </div>
+      <div class="mono" style="margin-top:10px;">UI · 240ms</div>
+    </div>
+    <div style="border:1px solid var(--line); padding:24px;">
+      <div class="label">Easing · Editorial</div>
+      <div style="font-family:var(--mono); font-size:15px; margin-top:10px;">cubic-bezier(0.4, 0, 0.1, 1)</div>
+      <div style="margin-top:18px; height:60px; background:var(--bg-soft); position:relative;">
+        <svg viewBox="0 0 200 60" style="width:100%; height:100%;"><path d="M0,55 C80,55 100,5 200,5" stroke="#0a0a0a" fill="none" stroke-width="1.5"/></svg>
+      </div>
+      <div class="mono" style="margin-top:10px;">Hero · 600ms</div>
+    </div>
+    <div style="border:1px solid var(--line); padding:24px;">
+      <div class="label">Easing · Inference</div>
+      <div style="font-family:var(--mono); font-size:15px; margin-top:10px;">linear · sin breath</div>
+      <div style="margin-top:18px; height:60px; background:var(--bg-soft); position:relative;">
+        <svg viewBox="0 0 200 60" style="width:100%; height:100%;"><path d="M0,30 Q25,5 50,30 T100,30 T150,30 T200,30" stroke="#ff8a3c" fill="none" stroke-width="1.5"/></svg>
+      </div>
+      <div class="mono" style="margin-top:10px;">Live · 1.8s loop</div>
+    </div>
+  </div>
+  <div class="grid-3">
+    <div style="border:1px solid var(--line); padding:24px;">
+      <div class="label">Page Transition</div>
+      <div style="font-size:14px; line-height:1.55; margin-top:10px;">下层背景保持，前景内容从底部 8px 推入。<b>320ms · standard ease</b>。</div>
+    </div>
+    <div style="border:1px solid var(--line); padding:24px;">
+      <div class="label">Hover State</div>
+      <div style="font-size:14px; line-height:1.55; margin-top:10px;">背景 2% 加深，下划线由 0 → 100%。<b>180ms</b>。</div>
+    </div>
+    <div style="border:1px solid var(--line); padding:24px;">
+      <div class="label">Live Pulse</div>
+      <div style="font-size:14px; line-height:1.55; margin-top:10px;">数据中心点呼吸：直径 ±15%，亮度 ±10%。<b>1800ms · sine</b>。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ 17 MOCKUP · DESKTOP HOME -->
+<section data-screen-label="17 Mockup · Home" style="padding:0; background:#1a1a1a;">
+  <div style="padding: 56px 72px 0; display:flex; justify-content:space-between; align-items:baseline; color:#f4f3ef;">
+    <div>
+      <div class="eyebrow" style="color:#8a8985;">08 · Desktop Mockups</div>
+      <h2 class="slide-title" style="margin-top:8px; color:#f4f3ef;">首页<span style="color: #8a8985; font-weight: 300;">Home</span></h2>
+    </div>
+    <div class="slide-num" style="color:#8a8985;">017 / 028</div>
+  </div>
+  <div style="padding: 40px 72px; height: calc(900px - 140px); display:flex; align-items:center; justify-content:center;">
+    <div class="mock" style="width:100%; height:100%; border:1px solid #232220; box-shadow: 0 30px 60px rgba(0,0,0,0.4);">
+      <div class="mock-nav" style="border-bottom:1px solid var(--line);">
+        <div data-seed-logo class="seed-logo" style="height:18px;"></div>
+        <div class="links"><span>研究</span><span>出版物</span><span>模型</span><span>动态</span><span>加入我们</span><span>关于</span></div>
+        <div class="right">
+          <span class="lang"><b>中</b> / EN</span>
+          <span style="border:1px solid var(--ink); padding:5px 12px; border-radius:100px; font-size:12px;">查看职位 →</span>
+        </div>
+      </div>
+      <div style="flex:1; display:grid; grid-template-columns: 1fr 1fr; padding: 40px 56px 0; gap:48px;">
+        <div>
+          <div class="mono">[ INTELLIGENCE · LIVE ]</div>
+          <h1 style="font-family:var(--serif); font-size:60px; line-height:1.05; letter-spacing:-0.025em; font-weight:400; margin-top:18px; white-space:nowrap;">探索智能的<span style="color: var(--muted); font-weight: 300;">边界与起点</span></h1>
+          <p style="margin-top:24px; font-size:15.5px; color:var(--muted); line-height:1.6; max-width:420px;">Seed 是字节跳动的通用智能研究团队。我们做的，是把研究变成日常 — 从语言模型，到多模态，到智能体。</p>
+          <div style="margin-top:32px; display:flex; gap:14px;"><button class="btn primary">最新研究 →</button><button class="btn">了解我们</button></div>
+        </div>
+        <div style="position:relative; border:1px solid var(--line); background:var(--bg-soft); overflow:hidden;">
+          <div class="dotgrid"></div>
+          <div class="seed-globe"></div>
+          <div class="globe-disc"></div>
+          <div class="heat-blob" style="left:60%; top:30%; width:140px; height:140px;"></div>
+          <div class="heat-blob" style="left:30%; top:60%; width:110px; height:110px; opacity:0.4;"></div>
+          <div style="position:absolute; bottom:18px; left:24px; right:24px; display:flex; justify-content:space-between; font-family:var(--mono); font-size:11px; color:var(--muted); letter-spacing:0.08em;">
+            <span>QPS 38,420 · LATENCY 42ms</span><span>SEED / 001</span>
+          </div>
+        </div>
+      </div>
+      <div style="padding: 32px 56px; display:grid; grid-template-columns: repeat(4, 1fr); gap:24px; border-top:1px solid var(--line); margin-top:24px;">
+        <div><div class="mono">FOUNDATION</div><div style="font-family:var(--serif); font-size:18px; margin-top:8px;">通用语言模型</div></div>
+        <div><div class="mono">VISION</div><div style="font-family:var(--serif); font-size:18px; margin-top:8px;">多模态理解与生成</div></div>
+        <div><div class="mono">RL</div><div style="font-family:var(--serif); font-size:18px; margin-top:8px;">强化学习与对齐</div></div>
+        <div><div class="mono">SYSTEMS</div><div style="font-family:var(--serif); font-size:18px; margin-top:8px;">大规模推理系统</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ 18 MOCKUP · RESEARCH -->
+<section data-screen-label="18 Mockup · Research" style="padding:0; background:#1a1a1a;">
+  <div style="padding: 56px 72px 0; display:flex; justify-content:space-between; align-items:baseline; color:#f4f3ef;">
+    <div>
+      <div class="eyebrow" style="color:#8a8985;">08 · Desktop</div>
+      <h2 class="slide-title" style="margin-top:8px; color:#f4f3ef;">研究<span style="color: #8a8985; font-weight: 300;">Research</span></h2>
+    </div>
+    <div class="slide-num" style="color:#8a8985;">018 / 028</div>
+  </div>
+  <div style="padding: 40px 72px; height: calc(900px - 140px); display:flex; align-items:center; justify-content:center;">
+    <div class="mock" style="width:100%; height:100%; border:1px solid #232220; box-shadow: 0 30px 60px rgba(0,0,0,0.4);">
+      <div class="mock-nav" style="border-bottom:1px solid var(--line);">
+        <div data-seed-logo class="seed-logo" style="height:18px;"></div>
+        <div class="links"><span style="color:var(--ink); font-weight:600;">研究</span><span>出版物</span><span>模型</span><span>动态</span><span>加入我们</span><span>关于</span></div>
+        <div class="right"><span class="lang"><b>中</b> / EN</span></div>
+      </div>
+      <div style="flex:1; display:grid; grid-template-columns: 240px 1fr; gap:0;">
+        <aside style="border-right:1px solid var(--line); padding: 32px 24px;">
+          <div class="label">Filters</div>
+          <ul style="list-style:none; margin-top:14px; display:flex; flex-direction:column; gap:8px; font-size:14px;">
+            <li style="display:flex; justify-content:space-between;"><span style="font-weight:500;">All</span><span class="mono">62</span></li>
+            <li style="display:flex; justify-content:space-between; color:var(--muted);"><span>Foundation</span><span class="mono">22</span></li>
+            <li style="display:flex; justify-content:space-between; color:var(--muted);"><span>Multimodal</span><span class="mono">14</span></li>
+            <li style="display:flex; justify-content:space-between; color:var(--muted);"><span>Reasoning</span><span class="mono">11</span></li>
+            <li style="display:flex; justify-content:space-between; color:var(--muted);"><span>Agents</span><span class="mono">08</span></li>
+            <li style="display:flex; justify-content:space-between; color:var(--muted);"><span>Systems</span><span class="mono">07</span></li>
+          </ul>
+          <div class="label" style="margin-top:32px;">Year</div>
+          <ul style="list-style:none; margin-top:14px; display:flex; flex-direction:column; gap:8px; font-size:14px;">
+            <li>2026</li><li style="color:var(--muted);">2025</li><li style="color:var(--muted);">2024</li>
+          </ul>
+        </aside>
+        <main style="padding:32px 40px; overflow:hidden;">
+          <h2 style="font-family:var(--serif); font-size:36px; line-height:1.1; letter-spacing:-0.02em; max-width:680px;">六个方向，一个共同的问题。</h2>
+          <p style="margin-top:14px; color:var(--muted); max-width:560px; font-size:14.5px;">智能从哪里来，能去多远？我们用模型、数据、系统的循环去逼近答案。</p>
+          <div style="margin-top:32px; display:grid; grid-template-columns: repeat(3, 1fr); gap:16px;">
+            <div style="border:1px solid var(--line); padding:20px; aspect-ratio:1/1.05; display:flex; flex-direction:column; justify-content:space-between;">
+              <div class="mono">FOUNDATION</div>
+              <div><div style="font-family:var(--serif); font-size:22px; line-height:1.1;">通用语言模型</div><div class="muted" style="font-size:12.5px; margin-top:8px;">Pre-training, scaling, alignment.</div></div>
+              <div class="mono">22 PAPERS →</div>
+            </div>
+            <div style="border:1px solid var(--line); padding:20px; aspect-ratio:1/1.05; display:flex; flex-direction:column; justify-content:space-between;">
+              <div class="mono">MULTIMODAL</div>
+              <div><div style="font-family:var(--serif); font-size:22px; line-height:1.1;">多模态理解</div><div class="muted" style="font-size:12.5px; margin-top:8px;">Joint vision-language modeling.</div></div>
+              <div class="mono">14 PAPERS →</div>
+            </div>
+            <div style="border:1px solid var(--line); padding:20px; aspect-ratio:1/1.05; display:flex; flex-direction:column; justify-content:space-between;">
+              <div class="mono">REASONING</div>
+              <div><div style="font-family:var(--serif); font-size:22px; line-height:1.1;">长程推理</div><div class="muted" style="font-size:12.5px; margin-top:8px;">Chain, search, memory.</div></div>
+              <div class="mono">11 PAPERS →</div>
+            </div>
+            <div style="border:1px solid var(--line); padding:20px; aspect-ratio:1/1.05; display:flex; flex-direction:column; justify-content:space-between;">
+              <div class="mono">AGENTS</div>
+              <div><div style="font-family:var(--serif); font-size:22px; line-height:1.1;">智能体</div><div class="muted" style="font-size:12.5px; margin-top:8px;">Tools, planning, environments.</div></div>
+              <div class="mono">08 PAPERS →</div>
+            </div>
+            <div style="border:1px solid var(--line); padding:20px; aspect-ratio:1/1.05; display:flex; flex-direction:column; justify-content:space-between;">
+              <div class="mono">RL</div>
+              <div><div style="font-family:var(--serif); font-size:22px; line-height:1.1;">对齐与反馈</div><div class="muted" style="font-size:12.5px; margin-top:8px;">RLHF, preference learning.</div></div>
+              <div class="mono">07 PAPERS →</div>
+            </div>
+            <div style="border:1px solid var(--line); padding:20px; aspect-ratio:1/1.05; display:flex; flex-direction:column; justify-content:space-between; background:var(--bg-soft);">
+              <div class="mono">SYSTEMS</div>
+              <div><div style="font-family:var(--serif); font-size:22px; line-height:1.1;">大规模系统</div><div class="muted" style="font-size:12.5px; margin-top:8px;">Training, serving, inference.</div></div>
+              <div class="mono">07 PAPERS →</div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ 19 MOCKUP · PUBLICATION -->
+<section data-screen-label="19 Mockup · Paper" style="padding:0; background:#1a1a1a;">
+  <div style="padding: 56px 72px 0; display:flex; justify-content:space-between; align-items:baseline; color:#f4f3ef;">
+    <div>
+      <div class="eyebrow" style="color:#8a8985;">08 · Desktop</div>
+      <h2 class="slide-title" style="margin-top:8px; color:#f4f3ef;">出版物详情<span style="color: #8a8985; font-weight: 300;">Paper</span></h2>
+    </div>
+    <div class="slide-num" style="color:#8a8985;">019 / 028</div>
+  </div>
+  <div style="padding: 40px 72px; height: calc(900px - 140px); display:flex; align-items:center; justify-content:center;">
+    <div class="mock" style="width:100%; height:100%; border:1px solid #232220; box-shadow: 0 30px 60px rgba(0,0,0,0.4);">
+      <div class="mock-nav" style="border-bottom:1px solid var(--line);">
+        <div data-seed-logo class="seed-logo" style="height:18px;"></div>
+        <div class="links"><span>研究</span><span style="color:var(--ink); font-weight:600;">出版物</span><span>模型</span><span>动态</span><span>加入我们</span><span>关于</span></div>
+        <div class="right"><span class="lang"><b>中</b> / EN</span></div>
+      </div>
+      <div style="flex:1; display:grid; grid-template-columns: 1fr 320px; gap:0;">
+        <main style="padding: 48px 72px; overflow:hidden;">
+          <div class="mono">RESEARCH NOTE · 04.26.2026 · ARXIV 2604.18211</div>
+          <h1 style="font-family:var(--serif); font-size:54px; line-height:1.04; letter-spacing:-0.025em; margin-top:18px; max-width:780px; text-wrap:balance;">Long-Horizon Reasoning <span style="color: var(--muted); font-weight: 300;">via Discrete Memory</span></h1>
+          <div style="margin-top:24px; font-size:14px; color:var(--muted);">Y. Chen · J. Wei · L. Tang · M. Zhao &nbsp;<span style="color:var(--ink);">+ 7 authors</span></div>
+          <p style="margin-top:36px; font-family:var(--serif); font-size:20px; line-height:1.55; color:var(--ink); max-width:680px;">我们提出一种把长程推理拆解到外部离散记忆中的方法 — 在 14 项 benchmark 上将 8B 模型推到 70B 的水平。</p>
+          <div style="margin-top:40px; padding-top:24px; border-top:1px solid var(--line); display:flex; gap:32px;">
+            <div><div class="label">Citations</div><div style="font-family:var(--serif); font-size:32px; margin-top:6px;">182</div></div>
+            <div><div class="label">Code</div><div style="font-family:var(--serif); font-size:32px; margin-top:6px;">★ 4.2k</div></div>
+            <div><div class="label">Replications</div><div style="font-family:var(--serif); font-size:32px; margin-top:6px;">9</div></div>
+          </div>
+          <div style="margin-top:40px; display:flex; gap:12px;">
+            <button class="btn primary">Read PDF →</button>
+            <button class="btn">arXiv</button>
+            <button class="btn ghost">Cite</button>
+          </div>
+        </main>
+        <aside style="border-left:1px solid var(--line); padding: 48px 32px; background:var(--bg-soft); display:flex; flex-direction:column; gap:24px;">
+          <div>
+            <div class="label">On this page</div>
+            <ul style="list-style:none; margin-top:12px; font-size:13px; display:flex; flex-direction:column; gap:8px;">
+              <li style="border-left:2px solid var(--ink); padding-left:10px;">Abstract</li>
+              <li style="padding-left:12px; color:var(--muted);">1. Background</li>
+              <li style="padding-left:12px; color:var(--muted);">2. Architecture</li>
+              <li style="padding-left:12px; color:var(--muted);">3. Results</li>
+              <li style="padding-left:12px; color:var(--muted);">4. Limitations</li>
+            </ul>
+          </div>
+          <div style="border-top:1px solid var(--line); padding-top:18px;">
+            <div class="label">Related</div>
+            <ul style="list-style:none; margin-top:12px; font-size:13.5px; display:flex; flex-direction:column; gap:10px; line-height:1.4;">
+              <li>Sparse Attention 的隐含正则</li>
+              <li>RLHF 之后：来自部署的反馈</li>
+              <li>Generalist Robot Policies</li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ 20 MOCKUP · MODEL CARD -->
+<section data-screen-label="20 Mockup · Model" style="padding:0; background:#1a1a1a;">
+  <div style="padding: 56px 72px 0; display:flex; justify-content:space-between; align-items:baseline; color:#f4f3ef;">
+    <div>
+      <div class="eyebrow" style="color:#8a8985;">08 · Desktop</div>
+      <h2 class="slide-title" style="margin-top:8px; color:#f4f3ef;">模型卡<span style="color: #8a8985; font-weight: 300;">Model · Doubao 1.5 Pro</span></h2>
+    </div>
+    <div class="slide-num" style="color:#8a8985;">020 / 028</div>
+  </div>
+  <div style="padding: 40px 72px; height: calc(900px - 140px); display:flex; align-items:center; justify-content:center;">
+    <div class="mock dark" style="width:100%; height:100%; border:1px solid #232220; box-shadow: 0 30px 60px rgba(0,0,0,0.4);">
+      <div class="mock-nav" style="border-bottom:1px solid var(--line);">
+        <div data-seed-logo class="seed-logo" style="height:18px; color:#f4f3ef;"></div>
+        <div class="links"><span>研究</span><span>出版物</span><span style="color:#f4f3ef; font-weight:600;">模型</span><span>动态</span><span>加入我们</span><span>关于</span></div>
+        <div class="right"><span class="lang"><b style="color:#f4f3ef;">中</b> / EN</span></div>
+      </div>
+      <div style="flex:1; display:grid; grid-template-columns: 1.2fr 1fr;">
+        <div style="padding: 56px 56px; border-right:1px solid var(--line);">
+          <div class="mono" style="color:#8a8985;">MODEL · v1.5 PRO · RELEASED 04.20.2026</div>
+          <h1 style="font-family:var(--serif); font-size:88px; line-height:0.96; letter-spacing:-0.03em; font-weight:400; margin-top:24px;">Doubao<br/><span style="color: #8a8985; font-weight: 300;">1.5 Pro</span></h1>
+          <p style="margin-top:32px; font-size:16px; line-height:1.65; color:#8a8985; max-width:480px;">在多项推理基准达到 SOTA，单卡 70 tps，已为 9 亿日活用户在 5 个区域提供服务。</p>
+          <div style="margin-top:48px; display:flex; gap:14px;">
+            <button class="btn primary" style="background:#f4f3ef; color:#0a0a0a; border-color:#f4f3ef;">在 Volcengine 调用 →</button>
+            <button class="btn" style="border-color:#f4f3ef; color:#f4f3ef;">查看技术报告</button>
+          </div>
+        </div>
+        <div style="padding: 56px; display:flex; flex-direction:column; gap:24px;">
+          <div>
+            <div class="label" style="color:#8a8985;">Benchmarks</div>
+            <div style="margin-top:14px; display:flex; flex-direction:column; gap:14px;">
+              <div>
+                <div style="display:flex; justify-content:space-between; font-size:13px;"><span>MMLU-Pro</span><span class="mono" style="color:#f4f3ef;">82.4</span></div>
+                <div style="margin-top:4px; height:2px; background:#232220;"><div style="width:82%; height:100%; background:#ff8a3c;"></div></div>
+              </div>
+              <div>
+                <div style="display:flex; justify-content:space-between; font-size:13px;"><span>GSM-8K</span><span class="mono" style="color:#f4f3ef;">94.1</span></div>
+                <div style="margin-top:4px; height:2px; background:#232220;"><div style="width:94%; height:100%; background:#ff8a3c;"></div></div>
+              </div>
+              <div>
+                <div style="display:flex; justify-content:space-between; font-size:13px;"><span>HumanEval</span><span class="mono" style="color:#f4f3ef;">88.6</span></div>
+                <div style="margin-top:4px; height:2px; background:#232220;"><div style="width:88%; height:100%; background:#ff8a3c;"></div></div>
+              </div>
+              <div>
+                <div style="display:flex; justify-content:space-between; font-size:13px;"><span>SWE-Bench</span><span class="mono" style="color:#f4f3ef;">62.3</span></div>
+                <div style="margin-top:4px; height:2px; background:#232220;"><div style="width:62%; height:100%; background:#ff8a3c;"></div></div>
+              </div>
+            </div>
+          </div>
+          <div style="border-top:1px solid var(--line); padding-top:20px;">
+            <div class="label" style="color:#8a8985;">Specs</div>
+            <table class="table" style="margin-top:10px; color:#f4f3ef;">
+              <tr><td style="color:#8a8985;">Params</td><td style="text-align:right;">175B (MoE 32×22B)</td></tr>
+              <tr><td style="color:#8a8985;">Context</td><td style="text-align:right;">256K</td></tr>
+              <tr><td style="color:#8a8985;">Languages</td><td style="text-align:right;">42</td></tr>
+              <tr><td style="color:#8a8985;">Throughput</td><td style="text-align:right;">70 tps / GPU</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ 21 MOCKUP · NEWS -->
+<section data-screen-label="21 Mockup · News" style="padding:0; background:#1a1a1a;">
+  <div style="padding: 56px 72px 0; display:flex; justify-content:space-between; align-items:baseline; color:#f4f3ef;">
+    <div>
+      <div class="eyebrow" style="color:#8a8985;">08 · Desktop</div>
+      <h2 class="slide-title" style="margin-top:8px; color:#f4f3ef;">动态<span style="color: #8a8985; font-weight: 300;">News</span></h2>
+    </div>
+    <div class="slide-num" style="color:#8a8985;">021 / 028</div>
+  </div>
+  <div style="padding: 40px 72px; height: calc(900px - 140px); display:flex; align-items:center; justify-content:center;">
+    <div class="mock" style="width:100%; height:100%; border:1px solid #232220; box-shadow: 0 30px 60px rgba(0,0,0,0.4);">
+      <div class="mock-nav" style="border-bottom:1px solid var(--line);">
+        <div data-seed-logo class="seed-logo" style="height:18px;"></div>
+        <div class="links"><span>研究</span><span>出版物</span><span>模型</span><span style="color:var(--ink); font-weight:600;">动态</span><span>加入我们</span><span>关于</span></div>
+        <div class="right"><span class="lang"><b>中</b> / EN</span></div>
+      </div>
+      <div style="flex:1; padding: 40px 72px;">
+        <h1 style="font-family:var(--serif); font-size:48px; line-height:1.05; letter-spacing:-0.025em; max-width:680px;">把研究的过程<span style="color: var(--muted); font-weight: 300;">写下来</span></h1>
+        <div style="margin-top:32px; display:grid; grid-template-columns: 2fr 1fr; gap:48px;">
+          <div style="display:flex; flex-direction:column;">
+            <article style="padding:18px 0; border-top:1px solid var(--line); display:grid; grid-template-columns: 100px 1fr 80px; gap:24px; align-items:baseline;">
+              <span class="mono">04.26</span>
+              <div>
+                <div style="font-family:var(--serif); font-size:22px; line-height:1.2; letter-spacing:-0.01em;">Long-Horizon Reasoning via Discrete Memory</div>
+                <div class="muted" style="font-size:13px; margin-top:6px;">在 14 项基准上把 8B 模型推到 70B 水平。</div>
+              </div>
+              <span class="mono" style="text-align:right;">PAPER</span>
+            </article>
+            <article style="padding:18px 0; border-top:1px solid var(--line); display:grid; grid-template-columns: 100px 1fr 80px; gap:24px; align-items:baseline;">
+              <span class="mono">04.20</span>
+              <div>
+                <div style="font-family:var(--serif); font-size:22px; line-height:1.2; letter-spacing:-0.01em;">Doubao 1.5 Pro 公开发布</div>
+                <div class="muted" style="font-size:13px; margin-top:6px;">256K 上下文，42 种语言，已上线火山引擎。</div>
+              </div>
+              <span class="mono" style="text-align:right;">RELEASE</span>
+            </article>
+            <article style="padding:18px 0; border-top:1px solid var(--line); display:grid; grid-template-columns: 100px 1fr 80px; gap:24px; align-items:baseline;">
+              <span class="mono">04.12</span>
+              <div>
+                <div style="font-family:var(--serif); font-size:22px; line-height:1.2; letter-spacing:-0.01em;">Seed 在 ICLR 2026 发表 9 篇论文</div>
+                <div class="muted" style="font-size:13px; margin-top:6px;">其中 3 篇被选为 Spotlight。</div>
+              </div>
+              <span class="mono" style="text-align:right;">EVENT</span>
+            </article>
+            <article style="padding:18px 0; border-top:1px solid var(--line); display:grid; grid-template-columns: 100px 1fr 80px; gap:24px; align-items:baseline;">
+              <span class="mono">03.30</span>
+              <div>
+                <div style="font-family:var(--serif); font-size:22px; line-height:1.2; letter-spacing:-0.01em;">RLHF 之后：来自部署的反馈</div>
+                <div class="muted" style="font-size:13px; margin-top:6px;">线上反馈如何反向训练对齐策略。</div>
+              </div>
+              <span class="mono" style="text-align:right;">NOTE</span>
+            </article>
+            <article style="padding:18px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line); display:grid; grid-template-columns: 100px 1fr 80px; gap:24px; align-items:baseline;">
+              <span class="mono">03.18</span>
+              <div>
+                <div style="font-family:var(--serif); font-size:22px; line-height:1.2; letter-spacing:-0.01em;">Generalist Robot Policies in the Wild</div>
+                <div class="muted" style="font-size:13px; margin-top:6px;">把单一策略部署到 6 类机器人形态。</div>
+              </div>
+              <span class="mono" style="text-align:right;">PAPER</span>
+            </article>
+          </div>
+          <aside style="border:1px solid var(--line); padding:24px; align-self:start;">
+            <div class="label">Subscribe</div>
+            <div style="font-family:var(--serif); font-size:22px; line-height:1.25; margin-top:12px;">每月一封 — 我们在做什么。</div>
+            <div style="margin-top:18px; display:flex; flex-direction:column; gap:10px;">
+              <input class="input" placeholder="email@bytedance.com" />
+              <button class="btn primary" style="justify-content:center;">订阅</button>
+            </div>
+            <div class="mono" style="margin-top:16px;">UNSUBSCRIBE ANYTIME</div>
+          </aside>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ 22 MOCKUP · ABOUT -->
+<section data-screen-label="22 Mockup · About" style="padding:0; background:#1a1a1a;">
+  <div style="padding: 56px 72px 0; display:flex; justify-content:space-between; align-items:baseline; color:#f4f3ef;">
+    <div>
+      <div class="eyebrow" style="color:#8a8985;">08 · Desktop</div>
+      <h2 class="slide-title" style="margin-top:8px; color:#f4f3ef;">关于<span style="color: #8a8985; font-weight: 300;">About</span></h2>
+    </div>
+    <div class="slide-num" style="color:#8a8985;">022 / 028</div>
+  </div>
+  <div style="padding: 40px 72px; height: calc(900px - 140px); display:flex; align-items:center; justify-content:center;">
+    <div class="mock" style="width:100%; height:100%; border:1px solid #232220; box-shadow: 0 30px 60px rgba(0,0,0,0.4);">
+      <div class="mock-nav" style="border-bottom:1px solid var(--line);">
+        <div data-seed-logo class="seed-logo" style="height:18px;"></div>
+        <div class="links"><span>研究</span><span>出版物</span><span>模型</span><span>动态</span><span>加入我们</span><span style="color:var(--ink); font-weight:600;">关于</span></div>
+        <div class="right"><span class="lang"><b>中</b> / EN</span></div>
+      </div>
+      <div style="flex:1; padding: 64px 72px; display:grid; grid-template-columns: 1.4fr 1fr; gap:80px;">
+        <div>
+          <div class="mono">EST. 2023 · BEIJING · SHANGHAI · SAN FRANCISCO</div>
+          <h1 style="font-family:var(--serif); font-size:60px; line-height:1.04; letter-spacing:-0.025em; margin-top:18px;">把研究的<span style="color: var(--muted); font-weight: 300;">远期</span>变成产品的<span style="color: var(--muted); font-weight: 300;">明天</span>。</h1>
+          <p style="margin-top:32px; font-size:16.5px; line-height:1.65; color:var(--muted); max-width:560px;">Seed 是字节跳动旗下的通用智能研究团队。我们相信智能不是终点，而是把世界与人重新连接的一种方式。我们既在前沿做研究，也在亿级用户的产品里做工程。</p>
+          <div style="margin-top:48px; padding-top:24px; border-top:1px solid var(--line); display:grid; grid-template-columns: repeat(4, 1fr); gap:24px;">
+            <div><div class="label">People</div><div style="font-family:var(--serif); font-size:36px; margin-top:6px;">240+</div></div>
+            <div><div class="label">Papers '25</div><div style="font-family:var(--serif); font-size:36px; margin-top:6px;">62</div></div>
+            <div><div class="label">Models</div><div style="font-family:var(--serif); font-size:36px; margin-top:6px;">07</div></div>
+            <div><div class="label">DAU served</div><div style="font-family:var(--serif); font-size:36px; margin-top:6px;">900M</div></div>
+          </div>
+        </div>
+        <div style="border:1px solid var(--line); padding:32px; background:var(--bg-soft); display:flex; flex-direction:column; gap:18px;">
+          <div class="label">Leadership</div>
+          <div style="display:flex; flex-direction:column; gap:14px;">
+            <div style="display:flex; gap:14px; align-items:center;"><div style="width:44px; height:44px; background:var(--line); border-radius:50%;"></div><div><div style="font-size:14.5px; font-weight:500;">Chen Yu</div><div class="muted" style="font-size:12.5px;">Head of Seed</div></div></div>
+            <div style="display:flex; gap:14px; align-items:center;"><div style="width:44px; height:44px; background:var(--line); border-radius:50%;"></div><div><div style="font-size:14.5px; font-weight:500;">Li Hang</div><div class="muted" style="font-size:12.5px;">Foundation Models</div></div></div>
+            <div style="display:flex; gap:14px; align-items:center;"><div style="width:44px; height:44px; background:var(--line); border-radius:50%;"></div><div><div style="font-size:14.5px; font-weight:500;">Zhao Min</div><div class="muted" style="font-size:12.5px;">Multimodal</div></div></div>
+            <div style="display:flex; gap:14px; align-items:center;"><div style="width:44px; height:44px; background:var(--line); border-radius:50%;"></div><div><div style="font-size:14.5px; font-weight:500;">Wei Jie</div><div class="muted" style="font-size:12.5px;">Systems</div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ 23 MOCKUP · CAREERS -->
+<section data-screen-label="23 Mockup · Careers" style="padding:0; background:#1a1a1a;">
+  <div style="padding: 56px 72px 0; display:flex; justify-content:space-between; align-items:baseline; color:#f4f3ef;">
+    <div>
+      <div class="eyebrow" style="color:#8a8985;">08 · Desktop</div>
+      <h2 class="slide-title" style="margin-top:8px; color:#f4f3ef;">加入我们<span style="color: #8a8985; font-weight: 300;">Careers</span></h2>
+    </div>
+    <div class="slide-num" style="color:#8a8985;">023 / 028</div>
+  </div>
+  <div style="padding: 40px 72px; height: calc(900px - 140px); display:flex; align-items:center; justify-content:center;">
+    <div class="mock" style="width:100%; height:100%; border:1px solid #232220; box-shadow: 0 30px 60px rgba(0,0,0,0.4);">
+      <div class="mock-nav" style="border-bottom:1px solid var(--line);">
+        <div data-seed-logo class="seed-logo" style="height:18px;"></div>
+        <div class="links"><span>研究</span><span>出版物</span><span>模型</span><span>动态</span><span style="color:var(--ink); font-weight:600;">加入我们</span><span>关于</span></div>
+        <div class="right"><span class="lang"><b>中</b> / EN</span></div>
+      </div>
+      <div style="flex:1; padding: 56px 72px; display:grid; grid-template-columns: 1fr 1.4fr; gap:64px;">
+        <div>
+          <div class="mono">42 OPEN ROLES · 4 LOCATIONS</div>
+          <h1 style="font-family:var(--serif); font-size:60px; line-height:1.04; letter-spacing:-0.025em; margin-top:18px;">和我们一起，<span style="color: var(--muted); font-weight: 300;">把模型放到世界里。</span></h1>
+          <div style="margin-top:32px; display:flex; flex-direction:column; gap:14px;">
+            <div class="label">Filter</div>
+            <div style="display:flex; gap:6px; flex-wrap:wrap;">
+              <span style="border:1px solid var(--ink); padding:5px 12px; border-radius:100px; font-size:12px;">All · 42</span>
+              <span style="border:1px solid var(--line); padding:5px 12px; border-radius:100px; font-size:12px; color:var(--muted);">Research · 18</span>
+              <span style="border:1px solid var(--line); padding:5px 12px; border-radius:100px; font-size:12px; color:var(--muted);">Engineering · 16</span>
+              <span style="border:1px solid var(--line); padding:5px 12px; border-radius:100px; font-size:12px; color:var(--muted);">Product · 5</span>
+              <span style="border:1px solid var(--line); padding:5px 12px; border-radius:100px; font-size:12px; color:var(--muted);">Design · 3</span>
+            </div>
+            <div style="display:flex; gap:6px; flex-wrap:wrap;">
+              <span style="border:1px solid var(--line); padding:5px 12px; border-radius:100px; font-size:12px; color:var(--muted);">Beijing</span>
+              <span style="border:1px solid var(--line); padding:5px 12px; border-radius:100px; font-size:12px; color:var(--muted);">Shanghai</span>
+              <span style="border:1px solid var(--line); padding:5px 12px; border-radius:100px; font-size:12px; color:var(--muted);">Singapore</span>
+              <span style="border:1px solid var(--line); padding:5px 12px; border-radius:100px; font-size:12px; color:var(--muted);">San Francisco</span>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex; flex-direction:column;">
+          <div style="display:grid; grid-template-columns: 1fr 140px 100px; padding:14px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line); align-items:baseline;">
+            <span style="font-family:var(--serif); font-size:20px;">Research Scientist · Foundation Models</span>
+            <span class="mono">Beijing</span>
+            <span class="mono" style="text-align:right;">Apply →</span>
+          </div>
+          <div style="display:grid; grid-template-columns: 1fr 140px 100px; padding:14px 0; border-bottom:1px solid var(--line); align-items:baseline;">
+            <span style="font-family:var(--serif); font-size:20px;">ML Engineer · Inference Systems</span>
+            <span class="mono">Singapore</span>
+            <span class="mono" style="text-align:right;">Apply →</span>
+          </div>
+          <div style="display:grid; grid-template-columns: 1fr 140px 100px; padding:14px 0; border-bottom:1px solid var(--line); align-items:baseline;">
+            <span style="font-family:var(--serif); font-size:20px;">Research Engineer · Multimodal</span>
+            <span class="mono">San Francisco</span>
+            <span class="mono" style="text-align:right;">Apply →</span>
+          </div>
+          <div style="display:grid; grid-template-columns: 1fr 140px 100px; padding:14px 0; border-bottom:1px solid var(--line); align-items:baseline;">
+            <span style="font-family:var(--serif); font-size:20px;">Postdoctoral Researcher · Reasoning</span>
+            <span class="mono">Beijing</span>
+            <span class="mono" style="text-align:right;">Apply →</span>
+          </div>
+          <div style="display:grid; grid-template-columns: 1fr 140px 100px; padding:14px 0; border-bottom:1px solid var(--line); align-items:baseline;">
+            <span style="font-family:var(--serif); font-size:20px;">Product Designer · Researcher Tools</span>
+            <span class="mono">Shanghai</span>
+            <span class="mono" style="text-align:right;">Apply →</span>
+          </div>
+          <div style="display:grid; grid-template-columns: 1fr 140px 100px; padding:14px 0; border-bottom:1px solid var(--line); align-items:baseline;">
+            <span style="font-family:var(--serif); font-size:20px;">Software Engineer · Training Infrastructure</span>
+            <span class="mono">Beijing</span>
+            <span class="mono" style="text-align:right;">Apply →</span>
+          </div>
+          <a style="margin-top:24px; font-size:13px;">查看全部 42 个职位 →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ 24 MOCKUP · MOBILE 1 -->
+<section data-screen-label="24 Mockup · Mobile · Home & Research" style="padding:0; background:#1a1a1a;">
+  <div style="padding: 56px 72px 0; display:flex; justify-content:space-between; align-items:baseline; color:#f4f3ef;">
+    <div>
+      <div class="eyebrow" style="color:#8a8985;">09 · Mobile</div>
+      <h2 class="slide-title" style="margin-top:8px; color:#f4f3ef;">移动端<span style="color: #8a8985; font-weight: 300;">主页 · 研究</span></h2>
+    </div>
+    <div class="slide-num" style="color:#8a8985;">024 / 028</div>
+  </div>
+  <div style="height: calc(900px - 140px); display:flex; align-items:center; justify-content:center; gap:60px;">
+    <!-- Phone 1 — Home -->
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="phone-statusbar"><span>9:41</span><span>● ● ●</span></div>
+        <div style="padding: 10px 22px 16px; display:flex; justify-content:space-between; align-items:center;">
+          <div data-seed-logo class="seed-logo" style="height:14px;"></div>
+          <span style="font-size:18px;">≡</span>
+        </div>
+        <div style="padding: 14px 22px;">
+          <div class="mono">[ INTELLIGENCE · LIVE ]</div>
+          <h1 style="font-family:var(--serif); font-size:28px; line-height:1.08; letter-spacing:-0.02em; margin-top:12px;">探索智能的<span style="color: var(--muted); font-weight: 300;">边界与起点</span></h1>
+        </div>
+        <div style="margin: 8px 22px 0; aspect-ratio:1.1/1; background:var(--bg-soft); position:relative; overflow:hidden; border:1px solid var(--line);">
+          <div class="dotgrid"></div>
+          <div class="globe-disc" style="width:200px; height:200px;"></div>
+          <div class="heat-blob" style="left:55%; top:35%; width:80px; height:80px;"></div>
+          <div style="position:absolute; bottom:10px; left:14px; right:14px; display:flex; justify-content:space-between; font-family:var(--mono); font-size:9px; color:var(--muted); letter-spacing:0.08em;">
+            <span>QPS 38,420</span><span>SEED / 001</span>
+          </div>
+        </div>
+        <div style="padding: 18px 22px;">
+          <div class="mono">RESEARCH</div>
+          <div style="display:flex; flex-direction:column; margin-top:8px;">
+            <div style="padding: 12px 0; border-top:1px solid var(--line); display:flex; justify-content:space-between; align-items:baseline;">
+              <div style="font-family:var(--serif); font-size:14px;">Foundation</div>
+              <span class="mono" style="font-size:9px;">22</span>
+            </div>
+            <div style="padding: 12px 0; border-top:1px solid var(--line); display:flex; justify-content:space-between; align-items:baseline;">
+              <div style="font-family:var(--serif); font-size:14px;">Multimodal</div>
+              <span class="mono" style="font-size:9px;">14</span>
+            </div>
+            <div style="padding: 12px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line); display:flex; justify-content:space-between; align-items:baseline;">
+              <div style="font-family:var(--serif); font-size:14px;">Reasoning</div>
+              <span class="mono" style="font-size:9px;">11</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Phone 2 — Research detail / paper -->
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="phone-statusbar"><span>9:41</span><span>● ● ●</span></div>
+        <div style="padding: 10px 22px 16px; display:flex; justify-content:space-between; align-items:center;">
+          <span style="font-size:14px;">←</span>
+          <span class="mono" style="font-size:9px;">RESEARCH NOTE · 04.26</span>
+          <span style="font-size:14px;">⊕</span>
+        </div>
+        <div style="padding: 14px 22px;">
+          <h1 style="font-family:var(--serif); font-size:24px; line-height:1.1; letter-spacing:-0.02em;">Long-Horizon Reasoning <span style="color: var(--muted); font-weight: 300;">via Discrete Memory</span></h1>
+          <div style="margin-top:12px; font-size:11px; color:var(--muted);">Y. Chen · J. Wei · L. Tang +7</div>
+          <p style="margin-top:18px; font-family:var(--serif); font-size:14px; line-height:1.6;">把长程推理拆解到外部离散记忆中 — 在 14 项 benchmark 上将 8B 模型推到 70B 水平。</p>
+          <div style="margin-top:18px; padding-top:14px; border-top:1px solid var(--line); display:flex; gap:18px;">
+            <div><div class="mono" style="font-size:9px;">Cites</div><div style="font-family:var(--serif); font-size:18px; margin-top:2px;">182</div></div>
+            <div><div class="mono" style="font-size:9px;">★ Code</div><div style="font-family:var(--serif); font-size:18px; margin-top:2px;">4.2k</div></div>
+            <div><div class="mono" style="font-size:9px;">Repl.</div><div style="font-family:var(--serif); font-size:18px; margin-top:2px;">9</div></div>
+          </div>
+          <div style="margin-top:20px; display:flex; flex-direction:column; gap:8px;">
+            <button class="btn primary" style="width:100%; justify-content:center; font-size:12.5px;">Read PDF →</button>
+            <button class="btn" style="width:100%; justify-content:center; font-size:12.5px;">arXiv · 2604.18211</button>
+          </div>
+        </div>
+        <div style="position:absolute; bottom:0; left:0; right:0; padding: 10px 22px 14px; border-top:1px solid var(--line); background:var(--bg); display:flex; justify-content:space-around; font-size:10px;">
+          <span style="font-weight:500;">研究</span><span style="color:var(--muted);">出版物</span><span style="color:var(--muted);">模型</span><span style="color:var(--muted);">动态</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ 25 MOCKUP · MOBILE 2 -->
+<section data-screen-label="25 Mockup · Mobile · Model & News" style="padding:0; background:#1a1a1a;">
+  <div style="padding: 56px 72px 0; display:flex; justify-content:space-between; align-items:baseline; color:#f4f3ef;">
+    <div>
+      <div class="eyebrow" style="color:#8a8985;">09 · Mobile</div>
+      <h2 class="slide-title" style="margin-top:8px; color:#f4f3ef;">移动端<span style="color: #8a8985; font-weight: 300;">模型卡 · 动态</span></h2>
+    </div>
+    <div class="slide-num" style="color:#8a8985;">025 / 028</div>
+  </div>
+  <div style="height: calc(900px - 140px); display:flex; align-items:center; justify-content:center; gap:60px;">
+    <!-- Phone — Model card (dark) -->
+    <div class="phone">
+      <div class="phone-screen" style="background:#0a0a0a; color:#f4f3ef;">
+        <div class="phone-statusbar"><span>9:41</span><span>● ● ●</span></div>
+        <div style="padding: 10px 22px 16px; display:flex; justify-content:space-between; align-items:center;">
+          <span style="font-size:14px;">←</span>
+          <span class="mono" style="font-size:9px; color:#8a8985;">MODEL · v1.5 PRO</span>
+          <span style="font-size:14px;">⊕</span>
+        </div>
+        <div style="padding: 14px 22px;">
+          <h1 style="font-family:var(--serif); font-size:48px; line-height:0.96; letter-spacing:-0.025em; font-weight:400;">Doubao<br/><span style="color: #8a8985; font-weight: 300;">1.5 Pro</span></h1>
+          <p style="margin-top:18px; font-size:13px; line-height:1.6; color:#8a8985;">256K 上下文，42 种语言，已为 9 亿日活用户提供服务。</p>
+          <div style="margin-top:22px;">
+            <div class="mono" style="font-size:9px; color:#8a8985;">BENCHMARKS</div>
+            <div style="margin-top:10px; display:flex; flex-direction:column; gap:8px;">
+              <div><div style="display:flex; justify-content:space-between; font-size:11px;"><span>MMLU-Pro</span><span class="mono" style="color:#f4f3ef; font-size:10px;">82.4</span></div><div style="margin-top:3px; height:2px; background:#232220;"><div style="width:82%; height:100%; background:#ff8a3c;"></div></div></div>
+              <div><div style="display:flex; justify-content:space-between; font-size:11px;"><span>GSM-8K</span><span class="mono" style="color:#f4f3ef; font-size:10px;">94.1</span></div><div style="margin-top:3px; height:2px; background:#232220;"><div style="width:94%; height:100%; background:#ff8a3c;"></div></div></div>
+              <div><div style="display:flex; justify-content:space-between; font-size:11px;"><span>HumanEval</span><span class="mono" style="color:#f4f3ef; font-size:10px;">88.6</span></div><div style="margin-top:3px; height:2px; background:#232220;"><div style="width:88%; height:100%; background:#ff8a3c;"></div></div></div>
+            </div>
+          </div>
+          <div style="margin-top:22px; display:flex; flex-direction:column; gap:8px;">
+            <button class="btn primary" style="width:100%; justify-content:center; background:#f4f3ef; color:#0a0a0a; border-color:#f4f3ef; font-size:12.5px;">在 Volcengine 调用 →</button>
+            <button class="btn" style="width:100%; justify-content:center; border-color:#f4f3ef; color:#f4f3ef; font-size:12.5px;">技术报告</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Phone — News timeline -->
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="phone-statusbar"><span>9:41</span><span>● ● ●</span></div>
+        <div style="padding: 10px 22px 16px; display:flex; justify-content:space-between; align-items:center;">
+          <div data-seed-logo class="seed-logo" style="height:14px;"></div>
+          <span style="font-size:18px;">≡</span>
+        </div>
+        <div style="padding: 14px 22px;">
+          <div class="mono">DYNAMICS</div>
+          <h1 style="font-family:var(--serif); font-size:24px; line-height:1.1; letter-spacing:-0.02em; margin-top:8px;">把研究的过程<span style="color: var(--muted); font-weight: 300;">写下来</span></h1>
+          <div style="margin-top:18px; display:flex; flex-direction:column;">
+            <article style="padding:12px 0; border-top:1px solid var(--line);">
+              <div class="mono" style="font-size:9px;">04.26 · PAPER</div>
+              <div style="font-family:var(--serif); font-size:14px; line-height:1.25; margin-top:6px;">Long-Horizon Reasoning via Discrete Memory</div>
+            </article>
+            <article style="padding:12px 0; border-top:1px solid var(--line);">
+              <div class="mono" style="font-size:9px;">04.20 · RELEASE</div>
+              <div style="font-family:var(--serif); font-size:14px; line-height:1.25; margin-top:6px;">Doubao 1.5 Pro 公开发布</div>
+            </article>
+            <article style="padding:12px 0; border-top:1px solid var(--line);">
+              <div class="mono" style="font-size:9px;">04.12 · EVENT</div>
+              <div style="font-family:var(--serif); font-size:14px; line-height:1.25; margin-top:6px;">Seed 在 ICLR 2026 发表 9 篇</div>
+            </article>
+            <article style="padding:12px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line);">
+              <div class="mono" style="font-size:9px;">03.30 · NOTE</div>
+              <div style="font-family:var(--serif); font-size:14px; line-height:1.25; margin-top:6px;">RLHF 之后：来自部署的反馈</div>
+            </article>
+          </div>
+        </div>
+        <div style="position:absolute; bottom:0; left:0; right:0; padding: 10px 22px 14px; border-top:1px solid var(--line); background:var(--bg); display:flex; justify-content:space-around; font-size:10px;">
+          <span style="color:var(--muted);">研究</span><span style="color:var(--muted);">出版物</span><span style="color:var(--muted);">模型</span><span style="font-weight:500;">动态</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ 26 VOICE -->
+<section data-screen-label="26 Voice" class="slide-pad">
+  <div class="slide-head">
+    <div>
+      <div class="eyebrow">10 · Voice & Tone</div>
+      <h2 class="slide-title" style="margin-top:8px;">语气<span style="color: var(--muted); font-weight: 300;">Voice</span></h2>
+    </div>
+    <div class="slide-num">026 / 028</div>
+  </div>
+  <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 64px;">
+    <div>
+      <div class="label" style="margin-bottom:18px;">三条原则</div>
+      <div style="display:flex; flex-direction:column; gap:24px;">
+        <div>
+          <div style="font-family:var(--serif); font-size:30px; line-height:1.15;">说人话</div>
+          <div class="muted" style="font-size:14.5px; margin-top:8px; line-height:1.55;">把术语翻译成具体的事。"在 14 项 benchmark 把 8B 推到 70B 水平" &gt; "实现性能突破"。</div>
+        </div>
+        <div style="border-top:1px solid var(--line); padding-top:20px;">
+          <div style="font-family:var(--serif); font-size:30px; line-height:1.15;">承认不确定</div>
+          <div class="muted" style="font-size:14.5px; margin-top:8px; line-height:1.55;">研究本来就有限制，把局限写清楚比夸大效果更可信。</div>
+        </div>
+        <div style="border-top:1px solid var(--line); padding-top:20px;">
+          <div style="font-family:var(--serif); font-size:30px; line-height:1.15;">不喊口号</div>
+          <div class="muted" style="font-size:14.5px; margin-top:8px; line-height:1.55;">"重新定义未来"、"颠覆"、"赋能"等词不出现在任何 Seed 文案中。</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="label" style="margin-bottom:18px;">前后对比</div>
+      <div style="display:flex; flex-direction:column; gap:18px;">
+        <div style="border:1px solid var(--line); padding:20px;">
+          <div class="mono" style="color:#b8311a;">✗ 旧的</div>
+          <div style="margin-top:10px; font-size:15.5px;">我们的革命性大模型 Doubao 1.5 Pro 重新定义了 AI 的边界，赋能千行百业的智能化升级！</div>
+          <div class="mono" style="margin-top:14px; color:#1f8a5b;">✓ 新的</div>
+          <div style="margin-top:10px; font-size:15.5px;">Doubao 1.5 Pro 在 4 项推理基准上达到 SOTA，已为 9 亿日活用户在 5 个区域提供服务。</div>
+        </div>
+        <div style="border:1px solid var(--line); padding:20px;">
+          <div class="mono" style="color:#b8311a;">✗ 旧的</div>
+          <div style="margin-top:10px; font-size:15.5px;">加入我们，一起开启 AI 的星辰大海！</div>
+          <div class="mono" style="margin-top:14px; color:#1f8a5b;">✓ 新的</div>
+          <div style="margin-top:10px; font-size:15.5px;">和我们一起，把模型放到世界里。42 个开放职位，4 座城市。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ 27 DO/DONT -->
+<section data-screen-label="27 Do · Don't" class="slide-pad">
+  <div class="slide-head">
+    <div>
+      <div class="eyebrow">10 · Brand Rules</div>
+      <h2 class="slide-title" style="margin-top:8px;">Do · <span style="color: var(--muted); font-weight: 300;">Don't</span></h2>
+    </div>
+    <div class="slide-num">027 / 028</div>
+  </div>
+  <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:18px;">
+    <!-- Do 1 -->
+    <div style="border:1px solid var(--line); aspect-ratio:1/1; display:flex; flex-direction:column; padding:18px; gap:12px;">
+      <div class="mono" style="color:#1f8a5b;">✓ DO · Logo on quiet bg</div>
+      <div style="flex:1; background:var(--bg-soft); display:flex; align-items:center; justify-content:center;">
+        <div data-seed-logo class="seed-logo" style="height:22px;"></div>
+      </div>
+    </div>
+    <div style="border:1px solid var(--line); aspect-ratio:1/1; display:flex; flex-direction:column; padding:18px; gap:12px;">
+      <div class="mono" style="color:#1f8a5b;">✓ DO · Heat as data only</div>
+      <div style="flex:1; background:#0a0a0a; display:flex; align-items:center; justify-content:center; position:relative;">
+        <div style="width:60px; height:60px; border-radius:50%; background:radial-gradient(circle, #ff8a3c, transparent 70%); filter:blur(8px);"></div>
+      </div>
+    </div>
+    <div style="border:1px solid var(--line); aspect-ratio:1/1; display:flex; flex-direction:column; padding:18px; gap:12px;">
+      <div class="mono" style="color:#1f8a5b;">✓ DO · Italic as concept</div>
+      <div style="flex:1; background:var(--bg-soft); display:flex; align-items:center; justify-content:center; padding:18px;">
+        <div style="font-family:var(--serif); font-size:30px; line-height:1.1; text-align:center;">智能的<span style="color: var(--muted); font-weight: 300;">边界</span></div>
+      </div>
+    </div>
+    <!-- Don't 1 -->
+    <div style="border:1px solid var(--line); aspect-ratio:1/1; display:flex; flex-direction:column; padding:18px; gap:12px;">
+      <div class="mono" style="color:#b8311a;">✗ DON'T · Color the mark</div>
+      <div style="flex:1; background:var(--bg-soft); display:flex; align-items:center; justify-content:center;">
+        <div data-seed-logo class="seed-logo" style="height:22px; color:#ff8a3c;"></div>
+      </div>
+    </div>
+    <div style="border:1px solid var(--line); aspect-ratio:1/1; display:flex; flex-direction:column; padding:18px; gap:12px;">
+      <div class="mono" style="color:#b8311a;">✗ DON'T · Heat as block</div>
+      <div style="flex:1; background:#ff8a3c; display:flex; align-items:center; justify-content:center;">
+        <div style="font-family:var(--serif); color:#fff; font-size:24px;">SEED</div>
+      </div>
+    </div>
+    <div style="border:1px solid var(--line); aspect-ratio:1/1; display:flex; flex-direction:column; padding:18px; gap:12px;">
+      <div class="mono" style="color:#b8311a;">✗ DON'T · Underline · all-caps CN</div>
+      <div style="flex:1; background:var(--bg-soft); display:flex; align-items:center; justify-content:center;">
+        <div style="font-family:var(--serif); font-size:24px; text-decoration:underline; font-weight:700;">智 能 的 边 界</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ 28 BACK COVER -->
+<section data-screen-label="28 Back" class="section-slide">
+  <div style="display:flex; justify-content:space-between;">
+    <div data-seed-logo class="seed-logo" style="height:24px;"></div>
+    <div class="mono">FIN · 028 / 028</div>
+  </div>
+  <div>
+    <h2 class="big-title" style="font-size:72px; white-space:nowrap;">把研究<span style="color: var(--muted); font-weight: 300;">放</span>到日常里。</h2>
+    <p style="margin-top:32px; font-size:18px; color:var(--muted); max-width:560px; line-height:1.6;">
+      这本手册随研究一起更新。问题、反馈、补充：<b style="color:var(--ink);">brand@seed.bytedance.com</b>
+    </p>
+  </div>
+  <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:24px; padding-top:32px; border-top:1px solid var(--line);">
+    <div><div class="label">Document</div><div class="mono" style="margin-top:6px;">Brand & DS v1.0</div></div>
+    <div><div class="label">Issued</div><div class="mono" style="margin-top:6px;">Jan 2026</div></div>
+    <div><div class="label">Owners</div><div class="mono" style="margin-top:6px;">Seed Brand · Design</div></div>
+    <div><div class="label">Next review</div><div class="mono" style="margin-top:6px;">Q3 2026</div></div>
+  </div>
+</section>
+
+</deck-stage>
+
+<script src="deck-stage.js"></script>
+<script>
+  /* inject the brand SVG into every [data-seed-logo] slot */
+  fetch('seed-logo.svg').then(r => r.text()).then(svg => {
+    svg = svg.replace(/fill="black"/g, 'fill="currentColor"');
+    document.querySelectorAll('[data-seed-logo]').forEach(el => { el.innerHTML = svg; });
+  });
+</script>
+</body>
+</html>
