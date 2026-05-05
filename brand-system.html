@@ -2,6 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, maximum-scale=5.0" />
 <title>Seed · Brand & Design System</title>
 <style>
   /* ── Tokens (mirror Seed Homepage.html) ───────────── */
@@ -238,9 +239,68 @@
     .globe-disc, .globe-disc::before, .globe-disc::after { animation: none; }
   }
 
+  /* ── Mobile portrait notice ──
+     This deck is authored at 1440x900 and auto-letterboxes via deck-stage.
+     On a portrait phone, slides become very small. We surface a one-time
+     hint to rotate to landscape. Tapping the hint dismisses it.
+     The :has() check keeps this scoped to actual phone-sized portrait viewports. */
+  .mobile-portrait-hint {
+    display: none;
+    position: fixed;
+    inset: 12px;
+    z-index: 9999;
+    padding: 24px 20px;
+    background: rgba(10,10,10,0.92);
+    color: #f4f3ef;
+    border-radius: 12px;
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.5;
+    align-items: flex-start;
+    gap: 12px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  .mobile-portrait-hint .icon {
+    font-size: 20px; line-height: 1; flex-shrink: 0; margin-top: 1px;
+  }
+  .mobile-portrait-hint .text { flex: 1; min-width: 0; }
+  .mobile-portrait-hint .title {
+    font-weight: 600; margin-bottom: 4px; letter-spacing: -0.005em;
+  }
+  .mobile-portrait-hint .sub {
+    color: rgba(244,243,239,0.65); font-size: 12.5px;
+  }
+  .mobile-portrait-hint .close {
+    background: rgba(244,243,239,0.12);
+    border: 1px solid rgba(244,243,239,0.2);
+    color: #f4f3ef;
+    padding: 4px 10px;
+    border-radius: 100px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  /* Show on phone-sized portrait viewports only */
+  @media (max-width: 768px) and (orientation: portrait) {
+    .mobile-portrait-hint { display: flex; }
+    .mobile-portrait-hint.dismissed { display: none; }
+  }
+
 </style>
 </head>
 <body>
+
+<aside class="mobile-portrait-hint" id="mobilePortraitHint" role="status" aria-live="polite">
+  <span class="icon" aria-hidden="true">↻</span>
+  <div class="text">
+    <div class="title">建议横屏阅读</div>
+    <div class="sub">本手册按 1440×900 排版，横屏体验更佳。也可两指捏放查看细节。</div>
+  </div>
+  <button class="close" type="button" onclick="this.closest('.mobile-portrait-hint').classList.add('dismissed')">知道了</button>
+</aside>
 
 <deck-stage aspect="1440x900">
 
